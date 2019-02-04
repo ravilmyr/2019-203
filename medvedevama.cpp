@@ -5,7 +5,7 @@
  */
 void medvedevama::lab1()
 {
-
+cout<<"Hello, World!"<<endl;
 }
 
 
@@ -82,5 +82,5 @@ void medvedevama::lab9()
 
 std::string medvedevama::get_name()
 {
-  return "Malkov V.E.";
+  return "Medvedeva M.A.";
 }
