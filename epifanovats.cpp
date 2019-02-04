@@ -5,7 +5,7 @@
  */
 void epifanovats::lab1()
 {
-
+cout<<"Hello World!"<<endl;
 }
 
 
@@ -82,5 +82,5 @@ void epifanovats::lab9()
 
 std::string epifanovats::get_name()
 {
-  return "????????";
+  return "Epifanova Tatiana Sergeevna";
 }
