@@ -13,7 +13,7 @@
 #include "kemaykinais.h"
 #include "kiselevis.h"
 #include "kobyzevkv.h"
-#include "makarovayu.h"
+#include "makarovaaa.h"
 #include "malovava.h"
 #include "maslovma.h"
 #include "medvedevama.h"
@@ -73,8 +73,8 @@ int main(int argc, char** argv)
   else if (strcmp(argv[1],"kobyzevkv")==0) {
     l = new kobyzevkv();
   }
-  else  if (strcmp(argv[1], "makarovayu") == 0) {
-    l = new makarovayu();
+  else  if (strcmp(argv[1], "makarovaaa") == 0) {
+    l = new makarovaaa();
   }
   else  if (strcmp(argv[1], "malovava") == 0) {
     l = new malovava();

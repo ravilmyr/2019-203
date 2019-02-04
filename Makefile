@@ -14,7 +14,7 @@ SOURCES= \
     kemaykinais.cpp\
     kiselevis.cpp\
     kobyzevkv.cpp\
-    makarovayu.cpp\
+    makarovaaa.cpp\
     malovava.cpp\
     maslovma.cpp\
     medvedevama.cpp \
