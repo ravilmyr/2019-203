@@ -5,7 +5,7 @@
  */
 void viktorovichev::lab1()
 {
-
+cout<<"Hello world!";
 }
 
 
@@ -82,5 +82,5 @@ void viktorovichev::lab9()
 
 std::string viktorovichev::get_name()
 {
-  return "????????";
+  return "Viktorovichev E.V";
 }
