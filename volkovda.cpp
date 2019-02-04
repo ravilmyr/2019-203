@@ -5,7 +5,7 @@
  */
 void volkovda::lab1()
 {
-
+	std::cout << "Hello World!\n";
 }
 
 
@@ -82,5 +82,5 @@ void volkovda::lab9()
 
 std::string volkovda::get_name()
 {
-  return "????????";
+  return "Volkov Dmitry Alekseevich";
 }
