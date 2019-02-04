@@ -5,7 +5,7 @@
  */
 void makarovaaa::lab1()
 {
-
+cout<<"Hello, World!"<<endl;
 }
 
 
@@ -82,5 +82,5 @@ void makarovaaa::lab9()
 
 std::string makarovaaa::get_name()
 {
-  return "????????";
+  return "Makarova Anna Alekseevna";
 }
