@@ -26,7 +26,7 @@
 #include "tereshkinki.h"
 #include "tokarevaaa.h"
 #include "shmelevaov.h"
-
+#include "zhalninrv.h"
 
 
 void print_usage(char* name);
@@ -111,6 +111,9 @@ int main(int argc, char** argv)
   }
   else  if (strcmp(argv[1], "shmelevaov") == 0) {
     l = new shmelevaov();
+  }
+  else  if (strcmp(argv[1], "zhalninrv") == 0) {
+    l = new zhalninrv();
   }
   else  {
     print_usage(argv[0]);
