@@ -5,7 +5,7 @@
  */
 void dryginaea::lab1()
 {
-
+	cout << "Hellow world!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void dryginaea::lab9()
 
 std::string dryginaea::get_name()
 {
-  return "????????";
+  return "Drygina E.A.";
 }
