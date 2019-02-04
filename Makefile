@@ -26,7 +26,8 @@ SOURCES= \
     tenishevir.cpp \
     tereshkinki.cpp \
     tokarevaaa.cpp \
-    shmelevaov.cpp \
+		shmelevaov.cpp \
+		zhalninrv.cpp \
 	lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
