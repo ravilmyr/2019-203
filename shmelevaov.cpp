@@ -5,7 +5,7 @@
  */
 void shmelevaov::lab1()
 {
-
+	cout << "Hello World!";
 }
 
 
@@ -82,5 +82,5 @@ void shmelevaov::lab9()
 
 std::string shmelevaov::get_name()
 {
-  return "????????";
+  return "Shmeleva O. V.";
 }
