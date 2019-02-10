@@ -5,7 +5,7 @@
  */
 void rusaevon::lab1()
 {
-
+cout<<"Hello world!";
 }
 
 
