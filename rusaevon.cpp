@@ -82,5 +82,5 @@ void rusaevon::lab9()
 
 std::string rusaevon::get_name()
 {
-  return "????????";
+  return "Ruzaev O.N.";
 }
