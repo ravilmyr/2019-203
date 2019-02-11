@@ -5,7 +5,7 @@
  */
 void tereshkinki::lab1()
 {
-
+cout<<"Hello World!";
 }
 
 
@@ -82,5 +82,5 @@ void tereshkinki::lab9()
 
 std::string tereshkinki::get_name()
 {
-  return "????????";
+  return "Tereshkin Kirill Igorevich";
 }
