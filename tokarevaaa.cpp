@@ -5,7 +5,7 @@
  */
 void tokarevaaa::lab1()
 {
-
+ cout << "Hello, World!";
 }
 
 
@@ -82,5 +82,5 @@ void tokarevaaa::lab9()
 
 std::string tokarevaaa::get_name()
 {
-  return "????????";
+  return "Tokareva Alina Aleksandrovna";
 }
