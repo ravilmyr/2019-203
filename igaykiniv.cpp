@@ -5,7 +5,8 @@
  */
 void igaykiniv::lab1()
 {
-
+	cout << "It's done" << endl;
+	system("pause");
 }
 
 
@@ -82,5 +83,5 @@ void igaykiniv::lab9()
 
 std::string igaykiniv::get_name()
 {
-  return "????????";
+  return "Igaykin I. V.";
 }
