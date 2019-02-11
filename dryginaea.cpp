@@ -1,21 +1,101 @@
 ﻿#include "dryginaea.h"
+#define  eps 0.0001
 
 /**
  * Введение в дисциплину
  */
 void dryginaea::lab1()
 {
-
+	cout << "Hello world!" << endl;
 }
+
 
 
 /**
  * Метод Гаусса с выбором главного элемента
  */
+
+void change(double**a, double* b, int line1, int line2, int n)
+{
+	double temp;
+	for (int i = 0; i < n; i++)
+	{
+		temp = a[line1][i];
+		a[line1][i] = a[line2][i];
+		a[line2][i] = temp;
+	}
+	temp = b[line1];
+	b[line1] = b[line2];
+	b[line2] = temp;
+}
+
 void dryginaea::lab2()
 {
+	double diagonal, temp;
+	int max;
 
+	for (int i = 0; i < N; i++)
+	{
+		max = i;
+
+		for (int l = i; l < N; l++)
+		{
+			if (abs(A[l][i]) > max)
+			{
+				max = l;
+			}
+		}
+
+		if (fabs(A[max][i]) > eps)
+		{
+			change(A, b, i, max, N);
+		}
+
+		diagonal = A[i][i];
+		A[i][i] = 1;
+
+		for (int j = i + 1; j < N; j++)
+		{
+			A[i][j] /= diagonal;
+		}
+
+		b[i] /= diagonal;
+
+		for (int j = i + 1; j < N; j++)
+		{
+			temp = A[j][i]; 
+			A[j][i] = 0;
+
+			for (int k = i + 1; k < N; k++)
+			{
+				A[j][k] -= A[i][k] * temp;
+			}
+
+			b[j] -= b[i] * temp;
+		}
+	}
+
+    for (int i = N - 1; i > 0; i--)
+	{
+		for (int j = i - 1; j >= 0; j--)
+		{
+			temp = A[j][i];
+				
+			for (int k = i; k >= 0; k--)
+			{
+				A[j][k] -= A[i][k] * temp;
+			}
+
+			b[j] -= b[i] * temp;
+		}
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		x[i] = b[i];
+	}
 }
+
 
 
 
@@ -82,5 +162,5 @@ void dryginaea::lab9()
 
 std::string dryginaea::get_name()
 {
-  return "????????";
+  return "Drygina E.A.";
 }
