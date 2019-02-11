@@ -5,7 +5,7 @@
  */
 void kemaykinais::lab1()
 {
-
+    cout << "Hello world!";
 }
 
 
@@ -82,5 +82,5 @@ void kemaykinais::lab9()
 
 std::string kemaykinais::get_name()
 {
-  return "????????";
+  return "Kemaykina Irina";
 }
