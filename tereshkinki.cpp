@@ -5,7 +5,7 @@
  */
 void tereshkinki::lab1()
 {
-cout<<"Hello World!";
+cout<<"Hello World!!";
 }
 
 
