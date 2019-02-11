@@ -5,7 +5,7 @@
  */
 void kobyzevkv::lab1()
 {
-
+    cout << "Hello, world!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void kobyzevkv::lab9()
 
 std::string kobyzevkv::get_name()
 {
-  return "????????";
+  return "Kobyzev Kirill";
 }
