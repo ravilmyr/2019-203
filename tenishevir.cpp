@@ -5,7 +5,7 @@
  */
 void tenishevir::lab1()
 {
-
+  cout << "Hello world!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void tenishevir::lab9()
 
 std::string tenishevir::get_name()
 {
-  return "????????";
+  return "Tenishev Ilya";
 }
