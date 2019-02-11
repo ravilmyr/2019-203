@@ -5,7 +5,7 @@
  */
 void sovetnikovakv::lab1()
 {
-	
+	cout << "Hello World!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void sovetnikovakv::lab9()
 
 std::string sovetnikovakv::get_name()
 {
-  return "????????";
+  return "sovetnikova Karina Vladislavovna";
 }

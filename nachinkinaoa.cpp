@@ -5,7 +5,7 @@
  */
 void nachinkinaoa::lab1()
 {
-
+   cout <<"Hello word";
 }
 
 
@@ -82,5 +82,5 @@ void nachinkinaoa::lab9()
 
 std::string nachinkinaoa::get_name()
 {
-  return "????????";
+  return "Начинкина Олеся Алексеевна";
 }

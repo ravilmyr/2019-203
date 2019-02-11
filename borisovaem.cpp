@@ -5,7 +5,7 @@
  */
 void borisovaem::lab1()
 {
-
+cout << "Hello, world!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void borisovaem::lab9()
 
 std::string borisovaem::get_name()
 {
-  return "????????";
+  return "Borisova E.M.";
 }

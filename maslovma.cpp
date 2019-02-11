@@ -5,7 +5,7 @@
  */
 void maslovma::lab1()
 {
-
+  cout << "Hello world!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void maslovma::lab9()
 
 std::string maslovma::get_name()
 {
-  return "????????";
+  return "MaslovMA";
 }
