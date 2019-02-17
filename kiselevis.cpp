@@ -5,7 +5,7 @@
  */
 void kiselevis::lab1()
 {
-
+	cout << "Hello, world!" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void kiselevis::lab9()
 
 std::string kiselevis::get_name()
 {
-  return "????????";
+  return "Kiselev Ilya Sergeevich";
 }
