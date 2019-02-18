@@ -1,20 +1,5 @@
 ﻿#include "makarovaaa.h"
 
-/*void systemout(double **A, double *b, int N) //вывод уравнений
-{
-  for (int i = 0; i < N; i++)
-  {
-    for (int j = 0; j < N; j++)
-    {
-      cout << A[i][j] << "*x" << j;
-      if (j < N - 1)
-        cout << " + ";
-    }
-    cout << " = " << b[i] << endl;
-  }
-  return;
-}*/
-
 double * gauss(double **A, double *b, int N)
 {
   double *x, max;
@@ -34,12 +19,14 @@ double * gauss(double **A, double *b, int N)
         index = i;
       }
     }
-    if (max < eps)
+	
+    /*if (max < eps)
     {
       cout << "Решение получить невозможно из-за нулевого столбца ";
       cout << index << " матрицы A" << endl;
       return 0;
-    }
+    }*/
+	
     for (int j = 0; j < N; j++)
     {
       double temp = A[k][j];
@@ -90,7 +77,6 @@ void makarovaaa::lab2()
 {
   system("chcp 1251");
   system("cls");
-  //systemout(A, b, N);
   x = gauss(A, b, N);
 
 }
