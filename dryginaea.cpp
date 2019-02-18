@@ -15,24 +15,37 @@ void dryginaea::lab1()
  * Метод Гаусса с выбором главного элемента
  */
 
-void change(double**a, double* b, int line1, int line2, int n)
+void change(double** a, double* b, int* shift, int line1, int line2, int n)
 {
 	double temp;
+	int temp1;
+
 	for (int i = 0; i < n; i++)
 	{
 		temp = a[line1][i];
 		a[line1][i] = a[line2][i];
 		a[line2][i] = temp;
 	}
+
 	temp = b[line1];
 	b[line1] = b[line2];
 	b[line2] = temp;
+
+	temp1 = shift[line1];
+	shift[line1] = shift[line2];
+	shift[line2] = temp1;
 }
 
 void dryginaea::lab2()
 {
 	double diagonal, temp;
 	int max;
+	int shift[N];
+
+	for (int i = 0; i < N; i++)
+	{
+		shift[i] = i;
+	}
 
 	for (int i = 0; i < N; i++)
 	{
@@ -48,7 +61,7 @@ void dryginaea::lab2()
 
 		if (fabs(A[max][i]) > eps)
 		{
-			change(A, b, i, max, N);
+			change(A, b,shift,i, max, N);
 		}
 
 		diagonal = A[i][i];
@@ -63,7 +76,7 @@ void dryginaea::lab2()
 
 		for (int j = i + 1; j < N; j++)
 		{
-			temp = A[j][i]; 
+			temp = A[j][i];
 			A[j][i] = 0;
 
 			for (int k = i + 1; k < N; k++)
@@ -80,7 +93,7 @@ void dryginaea::lab2()
 		for (int j = i - 1; j >= 0; j--)
 		{
 			temp = A[j][i];
-				
+
 			for (int k = i; k >= 0; k--)
 			{
 				A[j][k] -= A[i][k] * temp;
@@ -92,7 +105,7 @@ void dryginaea::lab2()
 
 	for (int i = 0; i < N; i++)
 	{
-		x[i] = b[i];
+		x[shift[i]] = b[i];
 	}
 }
 
