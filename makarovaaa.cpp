@@ -1,6 +1,6 @@
 ﻿#include "makarovaaa.h"
 
-void systemout(double **A, double *b, int N) //вывод уравнений
+/*void systemout(double **A, double *b, int N) //вывод уравнений
 {
   for (int i = 0; i < N; i++)
   {
@@ -13,7 +13,8 @@ void systemout(double **A, double *b, int N) //вывод уравнений
     cout << " = " << b[i] << endl;
   }
   return;
-}
+}*/
+
 double * gauss(double **A, double *b, int N)
 {
   double *x, max;
@@ -89,7 +90,7 @@ void makarovaaa::lab2()
 {
   system("chcp 1251");
   system("cls");
-  systemout(A, b, N);
+  //systemout(A, b, N);
   x = gauss(A, b, N);
 
 }
