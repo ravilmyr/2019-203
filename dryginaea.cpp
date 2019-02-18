@@ -30,15 +30,21 @@ void change(double** a, double* b, double* shift, int line1, int line2, int n)
 	b[line1] = b[line2];
 	b[line2] = temp;
 
-	shift[line1] = line2;
-	shift[line2] = line1;
+	temp = shift[line1];
+	shift[line1] = shift[line2];
+	shift[line2] = temp;
 }
 
 void dryginaea::lab2()
 {
 	double diagonal, temp;
 	int max;
-	int shift[N] = { 0, 1, 2 };
+	int shift[N];
+	
+	for (int i = 0; i < N; i++)
+	{
+		shift[i] = i;
+	}
 
 	for (int i = 0; i < N; i++)
 	{
@@ -98,7 +104,7 @@ void dryginaea::lab2()
 
 	for (int i = 0; i < N; i++)
 	{
-		x[i] = b[shift[i]];
+		x[shift[i]] = b[i];
 	}
 }
 
