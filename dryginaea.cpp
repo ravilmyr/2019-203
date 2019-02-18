@@ -40,7 +40,7 @@ void dryginaea::lab2()
 
 		for (int l = i; l < N; l++)
 		{
-			if (abs(A[l][i]) > max)
+			if (abs(A[l][i]) > abs(A[max][i]))
 			{
 				max = l;
 			}
