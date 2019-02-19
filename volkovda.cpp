@@ -1,5 +1,6 @@
 ﻿#include "volkovda.h"
-#define EPSILON 1e-10
+
+constexpr double EPSILON = 1.e-10;
 
 /**
  * Введение в дисциплину
@@ -50,7 +51,7 @@ void volkovda::lab2()
 
 		// Система не определена
 		if (A[k][k] < EPSILON) {
-			std::cout << "System of linear equations has no solution.";
+			std::cout << "System of linear equations has no solution.\n";
 			return;
 		}
 
@@ -78,13 +79,30 @@ void volkovda::lab2()
 }
 
 
-
 /**
  * Метод прогонки
  */
 void volkovda::lab3()
 {
+	double *v = new double[N];
+	double *w = new double[N];
 
+	// Прямой ход
+	v[0] = -A[0][1] / A[0][0];
+	w[0] = b[0] / A[0][0];
+	for (int i = 1; i < N; i++) {
+		v[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * v[i - 1]);
+		w[i] = (b[i] - A[i][i - 1] * w[i - 1]) / (A[i][i] + A[i][i - 1] * v[i - 1]);
+	}
+
+	// Обратный ход
+	x[N - 1] = w[N - 1];
+	for (int i = N - 2; i >= 0; i--) {
+		x[i] = v[i] * x[i + 1] + w[i];
+	}
+
+	delete[] v;
+	delete[] w;
 }
 
 
