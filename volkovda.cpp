@@ -11,29 +11,18 @@ void volkovda::lab1()
 }
 
 
+
 /**
  * Метод Гаусса с выбором главного элемента
  */
-
-// Меняет местами строки СЛАУ
-void row_swap(double **A, double *b, int N, int i, int j)
-{
-	double tmp;
-
-	tmp = b[i];
-	b[i] = b[j];
-	b[j] = tmp;
-
-	for (int k = 0; k < N; k++)
-	{
-		tmp = A[i][k];
-		A[i][k] = A[j][k];
-		A[j][k] = tmp;
-	}
-}
-
 void volkovda::lab2()
 {
+	// Отслеживаем позиции вектора x
+	int *p = new int[N];
+	for (int i = 0; i < N; i++) {
+		p[i] = i;
+	}
+
 	for (int k = 0; k < N; k++) {
 
 		// Выбор ведущего элемента
@@ -46,11 +35,15 @@ void volkovda::lab2()
 
 		// Меняем строки
 		if (d != k) {
-			row_swap(A, b, N, d, k);
+			for (int j = k; j < N; j++) {
+				std::swap(A[d][j], A[k][j]);
+			}
+			std::swap(p[d], p[k]);
+			std::swap(b[d], b[k]);
 		}
 
 		// Система не определена
-		if (A[k][k] < EPSILON) {
+		if (abs(A[k][k]) < EPSILON) {
 			std::cout << "System of linear equations has no solution.\n";
 			return;
 		}
@@ -72,11 +65,14 @@ void volkovda::lab2()
 		}
 	}
 
-	// Записываем результат в вектор x
+	// Записываем результат в вектор x с учетом измененных позиций
 	for (int i = 0; i < N; i++) {
-		x[i] = b[i];
+		x[i] = b[p[i]];
 	}
+
+	delete[] p;
 }
+
 
 
 /**
