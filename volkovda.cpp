@@ -2,6 +2,8 @@
 
 constexpr double EPSILON = 1.e-10;
 
+
+
 /**
  * Введение в дисциплину
  */
@@ -28,7 +30,7 @@ void volkovda::lab2()
 		// Выбор ведущего элемента
 		int d = k;
 		for (int i = k + 1; i < N; i++) {
-			if (abs(A[d][k]) < abs(A[i][k])) {
+			if (std::abs(A[d][k]) < std::abs(A[i][k])) {
 				d = i;
 			}
 		}
@@ -43,7 +45,7 @@ void volkovda::lab2()
 		}
 
 		// Система не определена
-		if (abs(A[k][k]) < EPSILON) {
+		if (std::abs(A[k][k]) < EPSILON) {
 			std::cout << "System of linear equations has no solution.\n";
 			return;
 		}
@@ -108,7 +110,54 @@ void volkovda::lab3()
  */
 void volkovda::lab4()
 {
+	// Вектор значений x на предыдущий итерации
+	double *px = new double[N];
+	for (int i = 0; i < N; i++) {
+		px[i] = 0.0;
+	}
 
+	/*int iteration = 0;*/
+	while (true) {
+		/*iteration++;*/
+
+		// Посчитаем значения неизвестных на текущей итерации
+		for (int i = 0; i < N; i++) {
+			x[i] = b[i];
+
+			// Вычислим сумму по всем отличным от i-ой неизвестной
+			for (int j = 0; j < N; j++) {
+				if (i != j) {
+					x[i] -= A[i][j] * px[j];
+				}
+			}
+
+			// Делим на коэффициент при i-ой неизвестной
+			x[i] /= A[i][i];
+		}
+
+		// Посчитаем максимальную по модулю погрешность
+		// относительно педыдущей итерации
+		double error = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(x[i] - px[i]) > error) {
+				error = std::abs(x[i] - px[i]);
+			}
+		}
+
+		// При достижении необходимой точности завершаем процесс
+		if (error < EPSILON) {
+			break;
+		}
+
+		// Текущее зачение итерации представим как предыдущее
+		for (int i = 0; i < N; i++) {
+			px[i] = x[i];
+		}
+	}
+
+	/*std::cout << "Number of iterations : " << iteration << '\n';*/
+
+	delete[] px;
 }
 
 
