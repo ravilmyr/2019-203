@@ -1,6 +1,6 @@
 ﻿#include "volkovda.h"
 
-constexpr double EPSILON = 1.e-10;
+constexpr double EPSILON = 1.e-15;
 
 
 
@@ -124,19 +124,19 @@ void volkovda::lab4()
 		for (int i = 0; i < N; i++) {
 			x[i] = b[i];
 
-			// Вычислим сумму по всем отличным от i-ой неизвестной
+			// Исключаем i -ю неизвестную
+			// Вычислим сумму
 			for (int j = 0; j < N; j++) {
 				if (i != j) {
-					x[i] -= A[i][j] * px[j];
+					x[i] -= (A[i][j] * px[j]);
 				}
 			}
 
-			// Делим на коэффициент при i-ой неизвестной
+			// Делим на коэффициент при i -ой неизвестной
 			x[i] /= A[i][i];
 		}
 
 		// Посчитаем максимальную по модулю погрешность
-		// относительно педыдущей итерации
 		double error = 0.0;
 		for (int i = 0; i < N; i++) {
 			if (std::abs(x[i] - px[i]) > error) {
@@ -167,7 +167,57 @@ void volkovda::lab4()
  */
 void volkovda::lab5()
 {
+	// Метод Зейделя (модификация метода простых итераций)
 
+	// Вектор значений x на предыдущий итерации
+	double *px = new double[N];
+	for (int i = 0; i < N; i++) {
+		px[i] = 0.0;
+	}
+
+	/*int iteration = 0;*/
+	while (true) {
+		/*iteration++;*/
+
+		// Посчитаем значения неизвестных на текущей итерации
+		for (int i = 0; i < N; i++) {
+			double var = 0.0;
+
+			// Исключаем i -ю неизвестную
+			// Вычисляем сумму k+1 -го шага
+			for (int j = 0; j < i; j++) {
+				var += (A[i][j] * x[j]);
+			}
+			// Вычисялем сумму k -го шага
+			for (int j = i + 1; j < N; j++) {
+				var += (A[i][j] * px[j]);
+			}
+
+			x[i] = (b[i] - var) / A[i][i];
+		}
+
+		// Посчитаем максимальную по модулю погрешность
+		double error = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(x[i] - px[i]) > error) {
+				error = std::abs(x[i] - px[i]);
+			}
+		}
+
+		// При достижении необходимой точности завершаем процесс
+		if (std::sqrt(error) < EPSILON) {
+			break;
+		}
+
+		// Текущее зачение итерации представим как предыдущее
+		for (int i = 0; i < N; i++) {
+			px[i] = x[i];
+		}
+	}
+
+	/*std::cout << "Number of iterations : " << iteration << '\n';*/
+
+	delete[] px;
 }
 
 
