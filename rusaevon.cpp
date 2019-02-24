@@ -14,7 +14,24 @@ cout<<"Hello world!";
  */
 void rusaevon::lab2()
 {
+ double p;
+	int maxn;
 
+    for (int k=0; k<N-1; k++)
+    {
+        maxn = k;
+        for (int i=k+1; i<N; i++)
+			if(abs(A[i][k]) > abs(A[maxn][k])) maxn = i; 
+        std::swap(A[maxn], A[k]); 
+        std::swap(b[maxn], b[k]);
+
+        for (int i=k+1; i<N; i++)
+        {
+            p = A[i][k]/A[k][k];
+            for (int j=k; j<N; j++)
+                A[i][j] -= p*A[k][j];
+            b[i] -= p*b[k];
+        }
 }
 
 
