@@ -5,7 +5,7 @@
  */
 void murtazinrr::lab1()
 {
-
+cout <<"Hello world" << endl;
 }
 
 
