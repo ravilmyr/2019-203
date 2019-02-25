@@ -5,7 +5,7 @@
  */
 void malovava::lab1()
 {
-
+cout<<"Hello world!!!"<<endl;
 }
 
 
@@ -82,5 +82,5 @@ void malovava::lab9()
 
 std::string malovava::get_name()
 {
-  return "????????";
+  return "Malova V.A.";
 }
