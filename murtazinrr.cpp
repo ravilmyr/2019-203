@@ -82,5 +82,5 @@ void murtazinrr::lab9()
 
 std::string murtazinrr::get_name()
 {
-  return "????????";
+  return "Murtazin R.R.";
 }
