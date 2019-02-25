@@ -5,7 +5,7 @@ double * gauss(double **A, double *b, int N)
   double *x, max;
   int k, index;
   const double eps = 0.00001;
-  x = new double[N];
+  x = new double[N]; double change[N]; int L;
   k = 0;
   while (k < N)
   {
@@ -19,14 +19,19 @@ double * gauss(double **A, double *b, int N)
         index = i;
       }
     }
-	
-    /*if (max < eps)
+
+    if (max < eps)
     {
       cout << "Решение получить невозможно из-за нулевого столбца ";
       cout << index << " матрицы A" << endl;
       return 0;
-    }*/
-	
+    }
+    for (int i = 0; i < N; i++)
+    {
+    change[i]=index;
+    if(index!=i) {swap(A[i],A[index]);
+                  swap(b[i],b[index]); }
+
     for (int j = 0; j < N; j++)
     {
       double temp = A[k][j];
@@ -58,7 +63,11 @@ double * gauss(double **A, double *b, int N)
     for (int i = 0; i < k; i++)
       b[i] = b[i] - A[i][k] * x[k];
   }
+   for (int i = N-1; i >= 0; i--) { if (index!=i) {L = change[i];
+                                              swap(A[L], A[i]);
+                                              swap(b[L], b[i]); } }
   return x;
+}
 }
 
 /**
