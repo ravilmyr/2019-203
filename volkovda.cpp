@@ -1,6 +1,6 @@
 ﻿#include "volkovda.h"
 
-constexpr double EPSILON = 1.e-15;
+const double EPSILON = 1.e-15;
 
 
 
