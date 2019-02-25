@@ -115,25 +115,24 @@ void volkovda::lab4()
 	for (int i = 0; i < N; i++) {
 		px[i] = 0.0;
 	}
+	
+	double tau = 0.01;
 
-	/*int iteration = 0;*/
+	int iteration = 0;
 	while (true) {
-		/*iteration++;*/
+		iteration++;
 
 		// Посчитаем значения неизвестных на текущей итерации
 		for (int i = 0; i < N; i++) {
-			x[i] = b[i];
-
 			// Исключаем i -ю неизвестную
 			// Вычислим сумму
+			double var = 0.0;
 			for (int j = 0; j < N; j++) {
-				if (i != j) {
-					x[i] -= (A[i][j] * px[j]);
-				}
+				var += (A[i][j] * px[j]);
 			}
 
 			// Делим на коэффициент при i -ой неизвестной
-			x[i] /= A[i][i];
+			x[i] = px[i] + tau * (b[i] - var);
 		}
 
 		// Посчитаем максимальную по модулю погрешность
@@ -155,7 +154,7 @@ void volkovda::lab4()
 		}
 	}
 
-	/*std::cout << "Number of iterations : " << iteration << '\n';*/
+	std::cout << "Number of iterations : " << iteration << '\n';
 
 	delete[] px;
 }
@@ -175,9 +174,9 @@ void volkovda::lab5()
 		px[i] = 0.0;
 	}
 
-	/*int iteration = 0;*/
+	int iteration = 0;
 	while (true) {
-		/*iteration++;*/
+		iteration++;
 
 		// Посчитаем значения неизвестных на текущей итерации
 		for (int i = 0; i < N; i++) {
@@ -215,7 +214,7 @@ void volkovda::lab5()
 		}
 	}
 
-	/*std::cout << "Number of iterations : " << iteration << '\n';*/
+	std::cout << "Number of iterations : " << iteration << '\n';
 
 	delete[] px;
 }
