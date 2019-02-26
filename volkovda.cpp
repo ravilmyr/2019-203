@@ -1,6 +1,6 @@
 ﻿#include "volkovda.h"
 
-constexpr double EPSILON = 1.e-15;
+const double EPSILON = 1.e-18;
 
 
 
@@ -116,24 +116,23 @@ void volkovda::lab4()
 		px[i] = 0.0;
 	}
 
-	/*int iteration = 0;*/
+	// Итерационный параметр
+	const double tau = 0.01;
+
+	int iteration = 0;
 	while (true) {
-		/*iteration++;*/
+		iteration++;
 
 		// Посчитаем значения неизвестных на текущей итерации
 		for (int i = 0; i < N; i++) {
-			x[i] = b[i];
+			double var = 0.0;
 
-			// Исключаем i -ю неизвестную
 			// Вычислим сумму
 			for (int j = 0; j < N; j++) {
-				if (i != j) {
-					x[i] -= (A[i][j] * px[j]);
-				}
+				var += (A[i][j] * px[j]);
 			}
 
-			// Делим на коэффициент при i -ой неизвестной
-			x[i] /= A[i][i];
+			x[i] = px[i] + tau * (b[i] - var);
 		}
 
 		// Посчитаем максимальную по модулю погрешность
@@ -155,7 +154,7 @@ void volkovda::lab4()
 		}
 	}
 
-	/*std::cout << "Number of iterations : " << iteration << '\n';*/
+	std::cout << "Number of iterations : " << iteration << '\n';
 
 	delete[] px;
 }
@@ -175,15 +174,14 @@ void volkovda::lab5()
 		px[i] = 0.0;
 	}
 
-	/*int iteration = 0;*/
+	int iteration = 0;
 	while (true) {
-		/*iteration++;*/
+		iteration++;
 
 		// Посчитаем значения неизвестных на текущей итерации
 		for (int i = 0; i < N; i++) {
 			double var = 0.0;
 
-			// Исключаем i -ю неизвестную
 			// Вычисляем сумму k+1 -го шага
 			for (int j = 0; j < i; j++) {
 				var += (A[i][j] * x[j]);
@@ -205,7 +203,7 @@ void volkovda::lab5()
 		}
 
 		// При достижении необходимой точности завершаем процесс
-		if (std::sqrt(error) < EPSILON) {
+		if (error < EPSILON) {
 			break;
 		}
 
@@ -215,7 +213,7 @@ void volkovda::lab5()
 		}
 	}
 
-	/*std::cout << "Number of iterations : " << iteration << '\n';*/
+	std::cout << "Number of iterations : " << iteration << '\n';
 
 	delete[] px;
 }
@@ -227,7 +225,71 @@ void volkovda::lab5()
  */
 void volkovda::lab6()
 {
+	// Вектор значений x на предыдущий итерации
+	double *px = new double[N];
+	for (int i = 0; i < N; i++) {
+		px[i] = 0.0;
+	}
+	
+	// Вектор невязок
+	double *r = new double[N];
 
+	int iteration = 0;
+	while (true) {
+		iteration++;
+
+		// Рассчитываем вектор невязок
+		for (int i = 0; i < N; i++) {
+			r[i] = b[i];
+
+			for (int j = 0; j < N; j++) {
+				r[i] -= (A[i][j] * px[j]);
+			}
+		}
+
+		// Рассчитываем итерационный параметр
+		double tau = 0.0;
+		double tmp = 0.0;
+		for (int i = 0; i < N; i++) {
+			double Ar = 0.0;
+
+			for (int j = 0; j < N; j++) {
+				Ar += (A[i][j] * r[j]);
+			}
+
+			tau += (Ar * r[i]);
+			tmp += (Ar * Ar);
+		}
+		tau /= tmp;
+
+		// Рассчитывается новое приближение в вектору x
+		for (int i = 0; i < N; i++) {
+			x[i] = px[i] + tau * r[i];
+		}
+
+		// Посчитаем максимальную по модулю погрешность
+		double error = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(x[i] - px[i]) > error) {
+				error = std::abs(x[i] - px[i]);
+			}
+		}
+
+		// При достижении необходимой точности завершаем процесс
+		if (error < EPSILON) {
+			break;
+		}
+
+		// Текущее зачение итерации представим как предыдущее
+		for (int i = 0; i < N; i++) {
+			px[i] = x[i];
+		}
+	}
+
+	std::cout << "Number of iterations : " << iteration << '\n';
+
+	delete[] px;
+	delete[] r;
 }
 
 
