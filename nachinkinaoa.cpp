@@ -14,6 +14,44 @@ void nachinkinaoa::lab1()
  */
 void nachinkinaoa::lab2()
 {
+    double eps=10e-7;
+    int num;
+    int massiv[N];
+    double ved;
+    for (int i=0; i<N; i++){
+                num=i;
+        for (int j=i+1; j<N; j++){
+            if(abs(A[j][i])>abs(A[num][i]))
+               num=j;}
+        if(abs(A[num][i])<eps) {cout << "No solution"; break;}
+        if(num!=i){
+            swap(A[i],A[num]);
+            swap(b[i],b[num]);
+        }
+        massiv[i]=num;
+        ved=A[i][i];//ведущий элемент находится на диагонали
+        b[i]/=ved;
+        for (int j=i; j<N; A[i][j++]/=ved);//делим по строке на ведущий элемент
+        for (int j=i+1; j<N; j++){
+                ved = A[j][i];
+                for (int k=i; k<N; k++)
+                    A[j][k]-=A[i][k]*ved;
+                 b[j]-=b[i]*ved;
+             }
+        for (int j=0; j<i; j++){
+                ved = A[j][i];
+                for (int k=i; k<N; k++)
+                    A[j][k]-=A[i][k]*ved;
+                 b[j]-=b[i]*ved;
+             }
+        }
+       for (int i=0; i<N; i++)
+          x[i]=b[i];
+       for (int i=N-1; i>=0; i--){
+          if(massiv[i]!=i){
+             swap(A[i], A[massiv[i]]);
+             swap(b[i], b[massiv[i]]);}
+        }
 
 }
 
@@ -24,6 +62,22 @@ void nachinkinaoa::lab2()
  */
 void nachinkinaoa::lab3()
 {
+     double *alfa = new double[N-1];
+       double *beta = new double[N];
+       alfa[0]=-A[0][1]/A[0][0];
+       beta[0]=b[0]/A[0][0];
+       double gamma;
+       for (int i=1; i<N; i++){
+        gamma=A[i][i]+alfa[i-1]*A[i][i-1];
+        if(i!=N-1)
+            alfa[i]=-A[i][i+1]/gamma;
+        beta[i]=(b[i]-A[i][i-1]*beta[i-1])/gamma;
+       }
+       x[N-1]=beta[N-1];
+       for (int i=N-2; i>=0; i--)
+        x[i]=alfa[i]*x[i+1]+beta[i];
+        delete[] alfa;
+	    delete[] beta;
 
 }
 
@@ -34,7 +88,24 @@ void nachinkinaoa::lab3()
  */
 void nachinkinaoa::lab4()
 {
-
+ for (int i=0; i<N; i++)
+              x[i]=0;
+       double eps=10e-15;
+       double tay=0.01;
+       double var=0;
+       for(;;){
+             double differ=0;
+         for (int i=0; i<N; i++){
+            double ay=0;
+            var=x[i];
+             for (int j=0; j<N; j++)
+              ay+=A[i][j]*x[j];
+            x[i]-=tay*(ay-b[i]);// новые значения на новой итерации
+          if(abs(x[i]-var)>differ)
+                differ=abs(x[i]-var);
+         }
+        if(differ<eps) break;
+       }
 }
 
 
@@ -44,6 +115,25 @@ void nachinkinaoa::lab4()
  */
 void nachinkinaoa::lab5()
 {
+    for (int i=0; i<N; i++)
+              x[i]=0;
+       double eps=10e-15;
+       double var=0;
+       for(;;){
+          double differ=0;
+         for (int i=0; i<N; i++){
+            double ay=0;
+            var=x[i];
+            for (int j=0; j<i; j++)
+              ay+=A[i][j]*x[j];
+            for (int j=i+1; j<N; j++)
+              ay+=A[i][j]*x[j];
+            x[i]=(b[i]-ay)/A[i][i];// новые значения на новой итерации
+          if(abs(x[i]-var)>differ)
+                differ=abs(x[i]-var);
+         }
+        if(differ<eps) break;
+       }
 
 }
 
