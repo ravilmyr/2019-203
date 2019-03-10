@@ -77,7 +77,19 @@ void kemaykinais::lab2()
  */
 void kemaykinais::lab3()
 {
+    double coeff1[N-1], coeff2[N];
+    coeff1[0]=-A[0][1]/A[0][0];
+    coeff2[0]=b[0]/A[0][0];
+    for (int i=1; i<N-1; i++){
+        coeff1[i]=-A[i][i+1]/(A[i][i]+A[i][i-1]*coeff1[i-1]);
+        coeff2[i]=(b[i]-A[i][i-1]*coeff2[i-1])/(A[i][i]+A[i][i-1]*coeff1[i-1]);
+    }
+    coeff2[N-1]=(b[N-1]-A[N-1][N-2]*coeff2[N-2])/(A[N-1][N-1]+A[N-1][N-2]*coeff1[N-2]);
 
+    x[N-1]=coeff2[N-1];
+    for (int i=N-2; i>=0; i--){
+        x[i]=coeff1[i]*x[i+1]+coeff2[i];
+    }
 }
 
 
@@ -87,17 +99,63 @@ void kemaykinais::lab3()
  */
 void kemaykinais::lab4()
 {
-
+    double eps=1e-20;
+    double t=0.0001;
+    double y[N];
+    double sum;
+    double maxRes=1;
+    for (;maxRes>eps;){
+        for (int i=0; i<N; i++){
+            y[i]=x[i];
+        }
+        for (int i=0; i<N; i++){
+            sum=0;
+            for (int j=0; j<N; j++){
+                sum+=A[i][j]*y[j];
+            }
+            x[i]=y[i]-t*(sum-b[i]);
+        }
+        maxRes=abs(x[0]-y[0]);
+        for (int i=1; i<N; i++){
+            if (abs(x[i]-y[i])>maxRes){
+                maxRes=abs(x[i]-y[i]);
+            }
+        }
+    }
 }
 
 
 
 /**
- * Метод Якоби или Зейделя
+ * Метод Зейделя
  */
 void kemaykinais::lab5()
 {
-
+    double eps=1e-20;
+    double y[N];
+    double sum;
+    double maxRes=1;
+    for (;maxRes>eps;){
+        for (int i=0; i<N; i++){
+            y[i]=x[i];
+        }
+        for (int i=0; i<N; i++){
+            sum=0;
+            for (int j=0; j<i; j++){
+                sum+=A[i][j]*x[j];
+            }
+            for (int j=i+1; j<N; j++){
+                sum+=A[i][j]*y[j];
+            }
+            x[i]=(1/A[i][i])*(b[i]-sum);
+        }
+        maxRes=abs(x[0]-y[0]);
+        for (int i=1; i<N; i++){
+            if (abs(x[i]-y[i])>maxRes){
+                maxRes=abs(x[i]-y[i]);
+            }
+        }
+    }
 }
 
 
