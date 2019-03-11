@@ -73,7 +73,26 @@ void kobyzevkv::lab2()
  */
 void kobyzevkv::lab3()
 {
+	double* alpha = new double[N - 1];
+	double* gamma = new double[N];
 
+	for (int i = 0; i < N; i++) {
+
+		gamma[i] = A[i][i];
+		if (i != 0) gamma[i] += A[i][i - 1] * alpha[i - 1];
+
+		if (i != N - 1) alpha[i] = -A[i][i + 1] / gamma[i];
+
+		x[i] = b[i] / gamma[i];
+		if (i != 0) x[i] -= A[i][i - 1] * x[i - 1] / gamma[i];
+
+	}
+	
+	for (int i = N - 2; i >= 0; i--)
+		x[i] += alpha[i] * x[i + 1];
+
+	delete[] alpha;
+	delete[] gamma;
 }
 
 
