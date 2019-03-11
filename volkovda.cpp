@@ -1,6 +1,6 @@
 ﻿#include "volkovda.h"
 
-const double EPSILON = 1.e-15;
+const double EPSILON = 1.e-18;
 
 
 
@@ -115,8 +115,9 @@ void volkovda::lab4()
 	for (int i = 0; i < N; i++) {
 		px[i] = 0.0;
 	}
-	
-	double tau = 0.01;
+
+	// Итерационный параметр
+	const double tau = 0.01;
 
 	int iteration = 0;
 	while (true) {
@@ -124,14 +125,13 @@ void volkovda::lab4()
 
 		// Посчитаем значения неизвестных на текущей итерации
 		for (int i = 0; i < N; i++) {
-			// Исключаем i -ю неизвестную
-			// Вычислим сумму
 			double var = 0.0;
+
+			// Вычислим сумму
 			for (int j = 0; j < N; j++) {
 				var += (A[i][j] * px[j]);
 			}
 
-			// Делим на коэффициент при i -ой неизвестной
 			x[i] = px[i] + tau * (b[i] - var);
 		}
 
@@ -182,7 +182,6 @@ void volkovda::lab5()
 		for (int i = 0; i < N; i++) {
 			double var = 0.0;
 
-			// Исключаем i -ю неизвестную
 			// Вычисляем сумму k+1 -го шага
 			for (int j = 0; j < i; j++) {
 				var += (A[i][j] * x[j]);
@@ -226,7 +225,71 @@ void volkovda::lab5()
  */
 void volkovda::lab6()
 {
+	// Вектор значений x на предыдущий итерации
+	double *px = new double[N];
+	for (int i = 0; i < N; i++) {
+		px[i] = 0.0;
+	}
+	
+	// Вектор невязок
+	double *r = new double[N];
 
+	int iteration = 0;
+	while (true) {
+		iteration++;
+
+		// Рассчитываем вектор невязок
+		for (int i = 0; i < N; i++) {
+			r[i] = b[i];
+
+			for (int j = 0; j < N; j++) {
+				r[i] -= (A[i][j] * px[j]);
+			}
+		}
+
+		// Рассчитываем итерационный параметр
+		double tau = 0.0;
+		double tmp = 0.0;
+		for (int i = 0; i < N; i++) {
+			double Ar = 0.0;
+
+			for (int j = 0; j < N; j++) {
+				Ar += (A[i][j] * r[j]);
+			}
+
+			tau += (Ar * r[i]);
+			tmp += (Ar * Ar);
+		}
+		tau /= tmp;
+
+		// Рассчитывается новое приближение к вектору x
+		for (int i = 0; i < N; i++) {
+			x[i] = px[i] + tau * r[i];
+		}
+
+		// Посчитаем максимальную по модулю погрешность
+		double error = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(x[i] - px[i]) > error) {
+				error = std::abs(x[i] - px[i]);
+			}
+		}
+
+		// При достижении необходимой точности завершаем процесс
+		if (error < EPSILON) {
+			break;
+		}
+
+		// Текущее зачение итерации представим как предыдущее
+		for (int i = 0; i < N; i++) {
+			px[i] = x[i];
+		}
+	}
+
+	std::cout << "Number of iterations : " << iteration << '\n';
+
+	delete[] px;
+	delete[] r;
 }
 
 
@@ -236,7 +299,109 @@ void volkovda::lab6()
  */
 void volkovda::lab7()
 {
+	// Вектор значений x на предыдущий итерации
+	double *px = new double[N];
+	for (int i = 0; i < N; i++) {
+		px[i] = 0.0;
+	}
 
+	// Вектор невязок на предыдущий итерации
+	double *pr = new double[N];
+
+	// Вектор невязок
+	double *r = new double[N];
+
+	// Вектор приближения
+	double *d = new double[N];
+
+	// Расчитаем невязку и приближение на 0 -вой итерации
+	for (int i = 0; i < N; i++) {
+		pr[i] = b[i];
+
+		for (int j = 0; j < N; j++) {
+			pr[i] -= (A[i][j] * px[j]);
+		}
+
+		d[i] = pr[i];
+	}
+
+	int iteration = 0;
+	while (true) {
+		iteration++;
+
+		double temp;
+
+		// Вычисли итерационный параметр alph
+		temp = 0.0;
+		double alph = 0.0;
+		for (int i = 0; i < N; i++) {
+			double Ad = 0.0;
+
+			for (int j = 0; j < N; j++) {
+				Ad += (A[i][j] * d[j]);
+			}
+
+			alph += (pr[i] * pr[i]);
+			temp += (Ad * d[i]);
+		}
+		alph /= temp;
+
+		// Рассчитывается новое приближение к вектору x
+		for (int i = 0; i < N; i++) {
+			x[i] = px[i] + alph * d[i];
+		}
+
+		// Посчитаем максимальную по модулю погрешность
+		double error = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(x[i] - px[i]) > error) {
+				error = std::abs(x[i] - px[i]);
+			}
+		}
+
+		// При достижении необходимой точности завершаем процесс
+		if (error < EPSILON) {
+			break;
+		}
+
+		// Расчитаем новый вектор невязок для последующей итерации
+		for (int i = 0; i < N; i++) {
+			double Ad = 0.0;
+
+			for (int j = 0; j < N; j++) {
+				Ad += (A[i][j] * d[j]);
+			}
+
+			r[i] = pr[i] - alph * Ad;
+		}
+
+		// Вычисли итерационный параметр beta для последующего приближения
+		temp = 0.0;
+		double beta = 0.0;
+		for (int i = 0; i < N; i++) {
+			beta += (r[i] * r[i]);
+			temp += (pr[i] * pr[i]);
+		}
+		beta /= temp;
+
+		// Приближение i+1 -ой итерации
+		for (int i = 0; i < N; i++) {
+			d[i] = r[i] + beta * d[i];
+		}
+
+		// Текущее зачение итерации представим как предыдущее
+		for (int i = 0; i < N; i++) {
+			px[i] = x[i];
+			pr[i] = r[i];
+		}
+	}
+
+	std::cout << "Number of iterations : " << iteration << '\n';
+
+	delete[] px;
+	delete[] pr;
+	delete[] r;
+	delete[] d;
 }
 
 
