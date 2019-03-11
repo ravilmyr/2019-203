@@ -84,6 +84,9 @@ void igaykiniv::lab3()
 
     for (int i = N - 2; i >= 0; i--)
         x[i] += alpha[i] * x[i + 1];
+
+    delete[] alpha;
+    delete[] gamma;
 }
 
 
@@ -93,7 +96,32 @@ void igaykiniv::lab3()
  */
 void igaykiniv::lab4()
 {
+    double *new_x = new double[N], eps = 0.0000001;
+    for (int i = 0; i < N; i++)
+        x[i] = 0;
 
+    do
+    {
+        for (int i = 0; i < N; i++)
+        {
+            double temp = 0;
+            for (int j = 0; j < N; j++)
+            {
+                temp += A[i][j] * x[j];
+            }
+
+            new_x[i] = x[i] + eps * (b[i] - temp);
+        }
+
+        double maxdif = 0;
+        for (int i = 0; i < N; i++)
+        {
+            if (fabs(x[i] - new_x[i]) > maxdif) maxdif = fabs(x[i] - new_x[i]);
+            x[i] = new_x[i];
+        }
+
+        if (maxdif < eps) break;
+    }while(true);
 }
 
 
@@ -103,7 +131,29 @@ void igaykiniv::lab4()
  */
 void igaykiniv::lab5()
 {
+    double *new_x = new double[N], eps = 0.0000001;
+    bool condition;
+    for (int i = 0; i < N; i++)
+        x[i] = 1;
 
+    do
+    {
+        condition = false;
+        for (int i = 0; i < N; i++)
+        {
+            new_x[i] = b[i];
+            for (int j = 0; j < N; j++)
+            {
+                if (i == j) continue;
+                new_x[i] -= A[i][j]*x[j];
+            }
+
+            new_x[i] /= A[i][i];
+            if (!condition) condition = (fabs(new_x[i] - x[i]) > eps);
+            x[i] = new_x[i];
+        }
+
+    }while(condition);
 }
 
 
