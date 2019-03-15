@@ -59,9 +59,9 @@ void volkovda::lab2()
 		// Приводим матрицу к диагональному виду на позиции k
 		for (int i = 0; i < N; i++) {
 			if (i != k) {
-				b[i] -= A[i][k] * b[k];
+				b[i] -= (A[i][k] * b[k]);
 				for (int j = N - 1; j >= k; j--) {
-					A[i][j] -= A[i][k] * A[k][j];
+					A[i][j] -= (A[i][k] * A[k][j]);
 				}
 			}
 		}
@@ -405,9 +405,81 @@ void volkovda::lab7()
 }
 
 
+
+/*
+* Метод вращения для нахождения собственных значений матрицы
+*/
 void volkovda::lab8()
 {
+	// Промежуточная матрица для вычислений
+	double **B = new double*[N];
+	for (int i = 0; i < N; i++) {
+		B[i] = new double[N];
+	}
 
+	while (true) {
+		// Вычисляем норму и находим наибольший не диагональный элемент
+		int iMax = 0;
+		int jMax = 0;
+		double norma = 0.0;
+		for (int i = 0; i < N - 1; i++) {
+			for (int j = i + 1; j < N; j++) {
+				if (std::abs(A[i][j]) > std::abs(A[iMax][jMax])) {
+					iMax = i;
+					jMax = j;
+				}
+				norma += (A[i][j] * A[i][j]);
+			}
+		}
+
+		// Матрица являеться диагональной
+		if (std::sqrt(norma) < EPSILON) {
+			break;
+		}
+
+		// Вычисляем значения переменных матрицы вражения
+		double fi = 0.5 * std::atan(2.0 * A[iMax][jMax] / (A[iMax][iMax] - A[jMax][jMax]));
+		double cos = std::cos(fi);
+		double sin = std::sin(fi);
+
+		// Находим новое приближение как A = B' * A * B
+		for (int k = 0; k < N; k++) {
+			B[k][iMax] = A[k][iMax] * cos + A[k][jMax] * sin;
+			B[k][jMax] = A[k][jMax] * cos - A[k][iMax] * sin;
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if ((j != iMax) && (j != jMax)) {
+					B[i][j] = A[i][j];
+				}
+			}
+		}
+
+		for (int k = 0; k < N; k++) {
+			A[iMax][k] = B[iMax][k] * cos + B[jMax][k] * sin;
+			A[jMax][k] = B[jMax][k] * cos - B[iMax][k] * sin;
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if ((i != iMax) && (i != jMax)) {
+					A[i][j] = B[i][j];
+				}
+			}
+		}
+	}
+
+	// Запишем в вектор решений вектор собственных значений матрицы
+	std::cout << "The vector X is the vector of eigenvalues of the matrix.\n";
+	for (int i = 0; i < N; i++) {
+		x[i] = A[i][i];
+	}
+
+	for (int i = 0; i < N; i++) {
+		delete[] B[i];
+	}
+	delete[] B;
 }
 
 
