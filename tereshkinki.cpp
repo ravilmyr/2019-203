@@ -54,7 +54,24 @@ void tereshkinki::lab2()
  */
 void tereshkinki::lab3()
 {
+	double *P = new double [N]; ///Коэффициенты "альфа"
+	double *Q = new double [N]; ///Коэффициенты "бетта"
 
+	P[0] = -A[0][1]/A[0][0];
+	Q[0] = b[0]/A[0][0];
+
+	for(int i=1; i<N; i++) ///Определяем прогоночные коэффициенты
+	{
+		P[i] = A[i][i+1]/(-A[i][i] - A[i][i-1]*P[i-1]);
+		Q[i] = (-b[i] + A[i][i-1]*Q[i-1])/(-A[i][i] - A[i][i-1]*P[i-1]);
+	}
+
+	x[N-1] = Q[N-1];
+	for(int i=N-2; i>=0; i--) ///Определяем решение
+		x[i] = P[i]*x[i+1] + Q[i];
+
+	delete [] P;
+	delete [] Q;
 }
 
 
