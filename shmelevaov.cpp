@@ -1,5 +1,5 @@
 ﻿#include "shmelevaov.h"
-
+const double eps = 1.e-15;
 /**
  * Введение в дисциплину
  */
@@ -13,23 +13,25 @@ void shmelevaov::lab1()
  * Метод Гаусса с выбором главного элемента
  */
 
- void change_lines (double **A, double *x, int first_line, int second_line, int N)
+ void change_lines (double **A, double *b, int first_line, int second_line, int N, int *help)
 {
     for (int i = first_line; i < N; i++)
     {
-        double temp = A[first_line][i];
-        A[first_line][i] = A[second_line][i];
-        A[second_line][i] = temp;
+        swap(A[first_line][i], A[second_line][i]);
     }
 
-    double temp = x[second_line];
-    x[second_line] = x[first_line];
-    x[first_line] = temp;
+    swap(b[first_line], b[second_line]);
+
+    swap(help[second_line], help[first_line]);
 }
 
 void shmelevaov::lab2()
 {
-    double eps = 0.00000001;
+    int *help = new int[N];
+	for (int i = 0; i < N; i++)
+    {
+		help[i] = i;
+    }
 
     for (int i = 0; i < N; i++)
     {
@@ -44,7 +46,7 @@ void shmelevaov::lab2()
 
         if (fabs(A[maximum][i]) > eps)
         {
-           change_lines(A, b, i, maximum, N);
+           change_lines(A, b, i, maximum, N, help);
         }
 
         double diagonal = A[i][i];
@@ -71,7 +73,25 @@ void shmelevaov::lab2()
         }
     }
 
-    x = b;
+    for (int i = N - 1; i > 0; i--)
+	{
+		for (int j = i - 1; j >= 0; j--)
+		{
+			double temp = A[j][i];
+
+			for (int k = i; k >= 0; k--)
+			{
+				A[j][k] -= A[i][k] * temp;
+			}
+
+			b[j] -= b[i] * temp;
+		}
+	}
+
+    for (int i = 0; i < N; i++)
+    {
+		x[help[i]] = b[i];
+	}
 }
 
 
