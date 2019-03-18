@@ -5,7 +5,7 @@
  */
 void malovava::lab1()
 {
-
+cout<<"Hello world!!!"<<endl;
 }
 
 
@@ -14,6 +14,35 @@ void malovava::lab1()
  */
 void malovava::lab2()
 {
+double Q = 0;
+
+    for (int i = 0; i < N - 1; i++)
+    {
+        for (int j = i + 1; j < N; j++)
+        {
+            Q = A[j][i] / A[i][i];
+            for (int k = i; k < N; k++)
+            {
+                A[j][k] -= Q * A[i][k];
+            }
+            b[j] -= Q * b[i];
+        }
+    }
+
+    for(int i = 0; i < N; i++)
+	{
+        x[i] = b[i];
+	}
+
+    for (int i = N - 1; i >= 0; i--)
+    {
+        for (int j = i + 1; j < N; j++)
+		{
+			x[i] -= A[i][j] * x[j];
+		}
+
+     x[i] /= A[i][i];
+	}
 
 }
 
@@ -82,5 +111,5 @@ void malovava::lab9()
 
 std::string malovava::get_name()
 {
-  return "????????";
+  return "Malova V.A.";
 }
