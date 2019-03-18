@@ -7,13 +7,14 @@ const double EPSILON = 1.e-21;
  */
 void sovetnikovakv::lab1()
 {
-	
+	std::cout << "Hello world!" << std::endl;
 }
+
+
 
 /**
  * Метод Гаусса с выбором главного элемента
  */
-
 void sovetnikovakv::lab2()
 {
 	// Запоминаем позиции x при перестановке строк
@@ -59,9 +60,9 @@ void sovetnikovakv::lab2()
 		for (int i = k + 1; i < N; i++) {
 			tmp = A[i][k];
 
-			b[i] -= b[k] * tmp;
+			b[i] -= (b[k] * tmp);
 			for (int j = k; j < N; j++) {
-				A[i][j] -= A[k][j] * tmp;
+				A[i][j] -= (A[k][j] * tmp);
 			}
 		}
 	}
@@ -69,7 +70,7 @@ void sovetnikovakv::lab2()
 	// Обратный ход
 	for (int k = N - 1; k > 0; k--) {
 		for (int i = 0; i < k; i++) {
-			b[i] -= A[i][k] * b[k];
+			b[i] -= (A[i][k] * b[k]);
 		}
 	}
 
@@ -205,7 +206,6 @@ void sovetnikovakv::lab5()
 	} while (norma > EPSILON);
 
 	delete[] prev_x;
-
 }
 
 
@@ -215,7 +215,61 @@ void sovetnikovakv::lab5()
  */
 void sovetnikovakv::lab6()
 {
+	// Начальное приближение
+	for (int i = 0; i < N; i++) {
+		x[i] = 0.;
+	}
 
+	// Вектор решений на предыдущей итерации
+	double *prev_x = new double[N];
+
+	// Вектор невязок
+	double *r = new double[N];
+
+	double norma = 0.;
+	do {
+		// Запишем передыдущий вектор
+		for (int i = 0; i < N; i++) {
+			prev_x[i] = x[i];
+		}
+
+		// Найдем новый вектор невязок
+		for (int i = 0; i < N; i++) {
+			r[i] = b[i];
+			for (int j = 0; j < N; j++) {
+				r[i] -= (A[i][j] * x[j]);
+			}
+		}
+
+		// Найдем итерационный параметр
+		double tau = 0.;
+		double div = 0.;
+		for (int i = 0; i < N; i++) {
+			double Ar = 0.;
+			for (int j = 0; j < N; j++) {
+				Ar += (A[i][j] * r[j]);
+			}
+			tau += (Ar * r[i]);
+			div += (Ar * Ar);
+		}
+		tau /= div;
+
+		// Найдем новый вектор решений на текущей итерации
+		for (int i = 0; i < N; i++) {
+			x[i] += (tau * r[i]);
+		}
+
+		// Находим погрешность
+		norma = 0.;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(prev_x[i] - x[i]) > norma) {
+				norma = std::abs(prev_x[i] - x[i]);
+			}
+		}
+	} while (norma > EPSILON);
+
+	delete[] prev_x;
+	delete[] r;
 }
 
 
@@ -243,5 +297,5 @@ void sovetnikovakv::lab9()
 
 std::string sovetnikovakv::get_name()
 {
-  return "????????";
+  return "Советникова Карина Владиславовна";
 }
