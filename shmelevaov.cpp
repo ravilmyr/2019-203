@@ -77,13 +77,8 @@ void shmelevaov::lab2()
 	{
 		for (int j = i - 1; j >= 0; j--)
 		{
-			double temp = A[j][i];
-
-			for (int k = i; k >= 0; k--)
-			{
-				A[j][k] -= A[i][k] * temp;
-			}
-
+			double temp = A[j][i];			
+			A[j][i] -= A[i][i] * temp;
 			b[j] -= b[i] * temp;
 		}
 	}
