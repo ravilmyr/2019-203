@@ -96,7 +96,7 @@ void igaykiniv::lab3()
  */
 void igaykiniv::lab4()
 {
-    double *new_x = new double[N], eps = 0.0000001;
+    double *new_x = new double[N], tau = 0.001, eps = 0.0000001;
     for (int i = 0; i < N; i++)
         x[i] = 0;
 
@@ -106,11 +106,9 @@ void igaykiniv::lab4()
         {
             double temp = 0;
             for (int j = 0; j < N; j++)
-            {
                 temp += A[i][j] * x[j];
-            }
 
-            new_x[i] = x[i] + eps * (b[i] - temp);
+            new_x[i] = x[i] + tau * (b[i] - temp);
         }
 
         double maxdif = 0;
@@ -122,6 +120,8 @@ void igaykiniv::lab4()
 
         if (maxdif < eps) break;
     }while(true);
+
+    delete[] new_x;
 }
 
 
@@ -154,6 +154,8 @@ void igaykiniv::lab5()
         }
 
     }while(condition);
+
+    delete[] new_x;
 }
 
 
@@ -163,7 +165,59 @@ void igaykiniv::lab5()
  */
 void igaykiniv::lab6()
 {
+    double *new_x = new double[N], *r = b, eps = 0.0000001;
+    for (int i = 0; i < N; i++)
+    {
+        x[i] = 0;
+        for (int j = 0; j < N; j++)
+            r[i] -= A[i][j] * x[j];
+    }
 
+    do
+    {
+        double tau, P = 0, Q = 0, t;
+        for (int i = 0; i < N; i++)
+        {
+            t = 0;
+            for (int j = 0; j < N; j++)
+                t += A[i][j] * r[j];
+
+
+            P += r[i] * t;
+            Q += t * t;
+        }
+
+        tau = P / Q;
+        for (int i = 0; i < N; i++)
+        {
+            double temp = 0;
+            for (int j = 0; j < N; j++)
+                temp += A[i][j] * x[j];
+
+            new_x[i] = x[i] + tau * (b[i] - temp);
+        }
+
+        for (int i = 0; i < N; i++)
+        {
+            double temp = 0;
+            for (int j = 0; j < N; j++)
+                temp += A[i][j] * new_x[j];
+
+            r[i] = b[i] - temp;
+        }
+
+        double maxdif = 0;
+        for (int i = 0; i < N; i++)
+        {
+            if (fabs(x[i] - new_x[i]) > maxdif) maxdif = fabs(x[i] - new_x[i]);
+            x[i] = new_x[i];
+        }
+
+        if (maxdif < eps) break;
+    }while(true);
+
+    delete[] new_x;
+    delete[] r;
 }
 
 
@@ -173,7 +227,71 @@ void igaykiniv::lab6()
  */
 void igaykiniv::lab7()
 {
+    double *new_x = new double[N], *r = b, eps = 0.0000001;
+    for (int i = 0; i < N; i++)
+    {
+        x[i] = 0;
+        for (int j = 0; j < N; j++)
+            r[i] -= A[i][j] * x[j];
+    }
 
+    double *z = r;
+    do
+    {
+        double tau1, tau2, P = 0, Q = 0, t;
+        for (int i = 0; i < N; i++)
+        {
+            t = 0;
+            for (int j = 0; j < N; j++)
+                t += A[i][j] * r[j];
+
+
+            P += r[i] * r[i];
+            Q += t * z[i];
+        }
+
+        tau1 = P / Q;
+        for (int i = 0; i < N; i++)
+            new_x[i] = x[i] + tau1 * z[i];
+
+        for (int i = 0; i < N; i++)
+        {
+            double temp = 0;
+            for (int j = 0; j < N; j++)
+                temp += A[i][j] * z[j];
+
+            r[i] = r[i] - tau1 * temp;
+        }
+
+        P = 0; Q = 0;
+        for (int i = 0; i < N; i++)
+        {
+            t = 0;
+            for (int j = 0; j < N; j++)
+                t += A[i][j] * r[j];
+
+
+            P += r[i] * r[i];
+            Q += z[i] * z[i];
+        }
+
+        tau2 = P / Q;
+        for (int i = 0; i < N; i++)
+            z[i] = r[i] + tau2 * z[i];
+
+        double maxdif = 0;
+        for (int i = 0; i < N; i++)
+        {
+            if (fabs(x[i] - new_x[i]) > maxdif) maxdif = fabs(x[i] - new_x[i]);
+            x[i] = new_x[i];
+        }
+
+        if (maxdif < eps) break;
+    }while(true);
+
+    delete[] new_x;
+    delete[] r;
+    delete[] z;
 }
 
 
