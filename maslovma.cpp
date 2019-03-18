@@ -15,6 +15,55 @@ void maslovma::lab1()
 void maslovma::lab2()
 {
 
+  double temp;
+    int maxInd;
+
+      for(int i=0;i<N-1;i++)
+        {
+         maxInd = i;
+
+          for(int k=i+1;k<N;k++)
+           {
+            if(abs(A[k][i]) > abs(A[maxInd][i]))
+              {
+                maxInd = k;
+              }
+           }
+
+           if (maxInd != i)
+            {
+              for(int k=i;k<N;k++)
+               {
+                std::swap(A[i][k],A[maxInd][k]);
+               }
+               std::swap(b[i],b[maxInd]);
+            }
+
+         for(int j=i+1;j<N;j++)
+          {
+             temp = A[j][i]/A[i][i];
+
+             b[j] -= temp*b[i];
+
+              for(int q=i;q<N;q++)
+                {
+                  A[j][q] -= temp*A[i][q];
+                }
+           }
+        }
+
+        for(int i=N-1;i>=0;i--)
+         {
+            b[i]/=A[i][i];
+
+             for(int j=i-1;j>=0;j--)
+              {
+                b[j] -= b[i]*A[j][i];
+              }
+
+         }
+    for(int i=0;i<N;i++)
+         x[i] = b[i];
 }
 
 
