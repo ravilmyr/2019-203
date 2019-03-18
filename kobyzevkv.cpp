@@ -150,9 +150,9 @@ void kobyzevkv::lab5()
 
 		for (int i = 0; i < N; i++) {
 			double sum = 0;
-			for (int j = 0; j < N; j++)
+			for (int j = 0; j < i; j++)
 				sum += A[i][j] * x[j];
-			for (int j = 0; j < N; j++)
+			for (int j = i + 1; j < N; j++)
 				sum += A[i][j] * prevX[j];
 			x[i] = (b[i] - sum) / A[i][i];
 		}
