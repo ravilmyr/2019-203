@@ -144,7 +144,34 @@ void nachinkinaoa::lab5()
  */
 void nachinkinaoa::lab6()
 {
-
+    double *r=new double[N];
+    for (int i=0; i<N; i++)
+              r[i]=0;
+    double eps=10e-16, var=0, tay=0;
+       for(;;){
+            double differ=0, sum1=0, sum2=0;
+            for (int i=0; i<N; i++){
+                r[i]=b[i];
+                for (int j=0; j<N; j++)
+                    r[i]-=A[i][j]*x[j];//вектор невязки
+            }
+            for (int i=0; i<N; i++){
+                double vec=0;
+                for (int k=0; k<N; k++)
+                     vec+=A[i][k]*r[k];
+                sum1+=r[i]*vec;
+                sum2+=vec*vec;
+            }
+            tay=sum1/sum2;
+            for (int i=0; i<N; i++){
+                var=x[i];
+                x[i]+=r[i]*tay;// новые значения на новой итерации
+                if(abs(x[i]-var)>differ)
+                    differ=abs(x[i]-var);
+            }
+            if(differ<eps) break;
+            }
+            delete[] r;
 }
 
 
