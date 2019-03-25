@@ -1,6 +1,6 @@
 ﻿#include "volkovda.h"
 
-const double EPSILON = 1.e-18;
+const double EPSILON = 1.e-15;
 
 
 
@@ -417,7 +417,10 @@ void volkovda::lab8()
 		B[i] = new double[N];
 	}
 
+	int iteration = 0;
 	while (true) {
+		iteration++;
+
 		// Вычисляем норму и находим наибольший не диагональный элемент
 		int iMax = 0;
 		int jMax = 0;
@@ -443,6 +446,7 @@ void volkovda::lab8()
 		double sin = std::sin(fi);
 
 		// Находим новое приближение как A = B' * A * B
+
 		for (int k = 0; k < N; k++) {
 			B[k][iMax] = A[k][iMax] * cos + A[k][jMax] * sin;
 			B[k][jMax] = A[k][jMax] * cos - A[k][iMax] * sin;
@@ -470,6 +474,8 @@ void volkovda::lab8()
 		}
 	}
 
+	std::cout << "Number of iterations : " << iteration << '\n';
+
 	// Запишем в вектор решений вектор собственных значений матрицы
 	std::cout << "The vector X is the vector of eigenvalues of the matrix.\n";
 	for (int i = 0; i < N; i++) {
@@ -480,12 +486,86 @@ void volkovda::lab8()
 		delete[] B[i];
 	}
 	delete[] B;
+
+	//***********************************************************************************
+
+	// Нахождение наибольшего по модулю собственного значения матрицы
+	// см. lab9
+	
+	double max = 0.0;
+	for (int i = 0; i < N; i++) {
+		if (max < std::abs(x[i])) {
+			max = x[i];
+		}
+	}
+	std::cout << "The largest eigenvalue of the matrix: " << max << '\n';
 }
 
 
+
+/*
+* Нахождение наибольшего по модулю собственного значения матрицы
+*/
 void volkovda::lab9()
 {
+	// Степенной метод без сдвига
 
+	// Искомое наибольшее по модулю собственное значение матрицы
+	double lambda = 0.0;
+	double plambda = 0.0;
+
+	// Изначельное приближение, полагаем ||x|| = 1.0
+	for (int i = 0; i < N; i++) {
+		x[i] = 0.0;
+	}
+	x[0] = 1.0;
+
+	// Вектор последующего приближения
+	double *y = new double[N];
+
+	int iteration = 0;
+	while (true) {
+		iteration++;
+
+		// Вычисляем i -ое приближение
+		for (int i = 0; i < N; i++) {
+			y[i] = 0.0;
+			for (int j = 0; j < N; j++) {
+				y[i] += (A[i][j] * x[j]);
+			}
+		}
+
+		// Вычисляем новое значение
+		lambda = 0.0;
+		for (int i = 0; i < N; i++) {
+			lambda += (x[i] * y[i]);
+		}
+
+		// Достаточно близки к ответу
+		if (std::abs(plambda - lambda) < EPSILON) {
+			break;
+		}
+
+		plambda = lambda;
+
+		// "Увеличение" степени
+
+		double norma_y = 0.0;
+		for (int i = 0; i < N; i++) {
+			norma_y += (y[i] * y[i]);
+		}
+		norma_y = std::sqrt(norma_y);
+
+		for (int i = 0; i < N; i++) {
+			x[i] = y[i] / norma_y;
+		}
+	}
+
+	std::cout << "Number of iterations : " << iteration << '\n';
+
+	std::cout << "The largest eigenvalue of the matrix: " << lambda << '\n';
+
+	delete[] y;
 }
 
 
