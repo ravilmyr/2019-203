@@ -97,7 +97,41 @@ void makarovaaa::lab2()
  */
 void makarovaaa::lab3()
 {
+//Это частный случай для метода Гаусса, используется, когда матрица трёхдиагональная
+double *up, *mid, *low;  
+up = new double[N]; 
+mid = new double[N]; 
+low = new double[N]; 
+double k; 
 
+low[0] = 0; 
+up[N-1] = 0; 
+
+for (int i = 0; i < N; i++)//Заполняем "диагональные" массивы 
+{ 
+	if (i - 1 >= 0 && i - 1 < N) 
+	up[i] = A[i-1][i];  
+	mid[i] = A[i][i];  
+	if (i + 1 >= 0 && i + 1 < N) 
+	low[i] = A[i+1][i];  
+} 
+//Прямая прогонка 
+for (int i = 1; i < N; i++) //Вычисляем коэффициенты прогонки 
+{ 
+	k = low[i]/mid[i-1]; 
+	mid[i] = mid[i] - k*up[i-1]; 
+	b[i] = b[i] - k*b[i-1]; 
+} 
+
+//Обратная прогонка 
+x[N-1] = b[N-1]/mid[N-1];
+
+for (int i = N - 2; i >= 0; i--) 
+	x[i]=(b[i]-up[i]*x[i+1])/mid[i]; 
+
+delete[] up;
+delete[] mid; 
+delete[] low; 
 }
 
 
