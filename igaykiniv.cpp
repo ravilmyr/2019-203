@@ -167,11 +167,7 @@ void igaykiniv::lab6()
 {
     double *new_x = new double[N], *r = new double[N], eps = 0.0000001;
     for (int i = 0; i < N; i++)
-    {
         x[i] = 0;
-        for (int j = 0; j < N; j++)
-            r[i] -= A[i][j] * x[j];
-    }
 
     do
     {
@@ -221,13 +217,12 @@ void igaykiniv::lab7()
 {
     double *new_x = new double[N], *r = b, *new_r = new double[N], eps = 0.0000001;
     for (int i = 0; i < N; i++)
-    {
         x[i] = 0;
-        for (int j = 0; j < N; j++)
-            r[i] -= A[i][j] * x[j];
-    }
 
-    double *z = r;
+    double *z = new double[N];
+    for (int i = 0; i < N; i++)
+        z[i] = r[i];
+
     do
     {
         double tau1, tau2, P = 0, Q = 0, t;
