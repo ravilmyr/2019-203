@@ -116,6 +116,67 @@ void maslovma::lab4()
  */
 void maslovma::lab5()
 {
+  const double eps = 10E-20;
+
+    double* D = new double[N];
+    double** LU = new double*[N];
+
+     for(int i=0;i<N;i++)
+      LU[i] = new double[N];
+
+    for(int i=0;i<N;i++)
+     for(int j=0;j<N;j++)
+       {
+         if(i!=j)
+          {
+            LU[i][j] = A[i][j];
+          }
+         else
+          {
+            D[i] = A[i][j];
+            LU[i][j] = 0;
+          }
+       }
+
+  double* new_x = new double[N];
+  double S;
+  double temp;
+  double k=0;
+
+  for(int i=0;i<N;i++)
+        new_x[i] = D[i];
+
+   do{
+      for(int i=0;i<N;i++)
+       {
+         S = 0;
+        for(int j=0;j<N;j++)
+         {
+           if(j!=i)
+            S +=  LU[i][j]*new_x[j];
+         }
+         x[i] = (b[i] - S)/D[i];
+       }
+
+        temp = fabs(new_x[0] - x[0]);
+
+       for(int i=1;i<N;i++)
+        if( fabs(new_x[i] - x[i]) > temp )
+         temp = fabs(new_x[i] - x[i]);
+
+        for(int i=0;i<N;i++)
+            new_x[i] = x[i];
+
+     k++;
+   }while(temp >= eps);
+
+  delete [] new_x;
+
+  for(int i=0;i<N;i++)
+     delete LU[i];
+
+    delete [] LU;
+    delete [] D;
 
 }
 
