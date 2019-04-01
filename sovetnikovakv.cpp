@@ -1,6 +1,6 @@
 ﻿#include "sovetnikovakv.h"
 
-const double EPSILON = 1.e-21;
+const double EPSILON = 1.e-15;
 
 /**
  * Введение в дисциплину
@@ -279,7 +279,103 @@ void sovetnikovakv::lab6()
  */
 void sovetnikovakv::lab7()
 {
+	// Начальное приближение
+	for (int i = 0; i < N; i++) {
+		x[i] = 0.;
+	}
 
+	// Вектор решений на предыдущей итерации
+	double *prev_x = new double[N];
+
+	// Вектор невязок на предыдущей итерации
+	double *prev_r = new double[N];
+
+	// Вектор невязок
+	double *r = new double[N];
+
+	// Вектор приближения
+	double *z = new double[N];
+	
+	// Найдем начальную невязку и приближение
+	for (int i = 0; i < N; i++) {
+		r[i] = b[i];
+		for (int j = 0; j < N; j++) {
+			r[i] -= (A[i][j] * x[j]);
+		}
+		z[i] = r[i];
+	}
+
+	double temp = 0.;
+	while (true) {
+		// Найдем 1-й итерационный параметр
+		temp = 0.;
+		double alph = 0.;
+		for (int i = 0; i < N; i++) {
+			double Az = 0.;
+			for (int j = 0; j < N; j++) {
+				Az += (A[i][j] * z[j]);
+			}
+			alph += (r[i] * r[i]);
+			temp += (Az * z[i]);
+		}
+		alph /= temp;
+
+		// Запишем предыдущее решение
+		for (int i = 0; i < N; i++) {
+			prev_x[i] = x[i];
+		}
+
+		// Найдем новый вектор решений
+		for (int i = 0; i < N; i++) {
+			x[i] += (alph * z[i]);
+		}
+
+		// Находим погрешность
+		double norma = 0.;
+		for (int i = 0; i < N; i++) {
+			if (std::abs(prev_x[i] - x[i]) > norma) {
+				norma = std::abs(prev_x[i] - x[i]);
+			}
+		}
+
+		// Достижение необходимой точности
+		if (norma < EPSILON) {
+			break;
+		}
+
+		// Запишем предыдущую невязку
+		for (int i = 0; i < N; i++) {
+			prev_r[i] = r[i];
+		}
+
+		// Найдем новую невязку для последующей итерации
+		for (int i = 0; i < N; i++) {
+			double Az = 0.;
+			for (int j = 0; j < N; j++) {
+				Az += (A[i][j] * z[j]);
+			}
+			r[i] -= (alph * Az);
+		}
+
+		// Найдем 2-й итерационный параметр
+		temp = 0.;
+		double beta = 0.;
+		for (int i = 0; i < N; i++) {
+			beta += (r[i] * r[i]) ;
+			temp += (prev_r[i] * prev_r[i]);
+		}
+		beta /= temp;
+
+		// Расчитаем приближение для последующей итерации
+		for (int i = 0; i < N; i++) {
+			z[i] = r[i] + beta * z[i];
+		}
+	}
+
+	delete[] prev_x;
+ 	delete[] prev_r;
+	delete[] r;
+	delete[] z;
 }
 
 
