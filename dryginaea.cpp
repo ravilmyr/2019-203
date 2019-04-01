@@ -244,6 +244,12 @@ void dryginaea::lab5()
 		}
 
 		Multi(gapA, gapX, x, N);
+
+		for (int i = 0; i < N; i++)
+		{
+			x[i] = x[i] + gapB[i];
+		}
+
 		int k = 0;
 
 		for (int i = 0; i < N; i++)
