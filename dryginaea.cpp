@@ -158,7 +158,7 @@ void Multi(double **matrix1, double *matrix2, double *otvet, double *matrix3, in
 			sum += matrix1[i][j] * matrix2[j];
 		}
 
-		otvet[i] = sum + matrix3[i];
+		otvet[i] = sum - matrix3[i];
 	}
 }
 
