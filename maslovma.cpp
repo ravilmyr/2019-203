@@ -184,7 +184,7 @@ void maslovma::lab5()
 /**
  * Метод минимальных невязок
  */
-void MatrVect(double **M, double *V, double *R)
+void MatrVect(int N, double **M, double *V, double *R)
 {
     for(int i=0; i<N; i++)
     {
@@ -194,7 +194,7 @@ void MatrVect(double **M, double *V, double *R)
     }
 }
 
-double ScalarVect(double* v1, double* v2)
+double ScalarVect(int N, double* v1, double* v2)
 {
 	double result=0;
 	for (int i=0; i<N; i++)
@@ -219,17 +219,17 @@ void maslovma::lab6()
 
     do
     {
-        MatrVect(A, TempX, U);
+        MatrVect(N, A, TempX, U);
 
         for(int i=0; i<N; i++)
         {
             r[i] = U[i]-b[i]; /// Вектор невязок
         }
 
-        MatrVect(A, r, U);
+        MatrVect(N, A, r, U);
 
-        double TempTau1 = ScalarVect(U, r);
-        double TempTau2 = ScalarVect(U, U);
+        double TempTau1 = ScalarVect(N, U, r);
+        double TempTau2 = ScalarVect(N, U, U);
         if (TempTau2 == 0) break;
 
         Tau = TempTau1/TempTau2; /// Итерационный параметр
@@ -241,7 +241,7 @@ void maslovma::lab6()
             p[i] = x[i]-TempX[i];
 
         count++;
-    } while ((sqrt(ScalarVect(p, p)) >= eps) && (count < 500000));
+    } while ((sqrt(ScalarVect(N, p, p)) >= eps) && (count < 500000));
 
     delete[] U;
     delete[] r;
