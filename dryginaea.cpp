@@ -1,5 +1,5 @@
 ﻿#include "dryginaea.h"
-#define  eps 0.0001
+#define  eps 1.e-9
 
 /**
  * Введение в дисциплину
@@ -171,6 +171,7 @@ void dryginaea::lab4()
 		x[i] = b[i];
 	}
 
+	int step = 0;
 	while (true)
 	{
 		for (int i = 0; i < N; i++)
@@ -194,6 +195,11 @@ void dryginaea::lab4()
 				k++;
 			}
 		}
+		if (k == N) break;
+
+		++step;
+	}
+	std::cout << step << std::endl;
 }
 
 
