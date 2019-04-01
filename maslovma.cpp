@@ -184,7 +184,7 @@ void maslovma::lab5()
 /**
  * Метод минимальных невязок
  */
-void maslovma::MatrVect(double **M, double *V, double *R)
+void MatrVect(double **M, double *V, double *R)
 {
     for(int i=0; i<N; i++)
     {
@@ -194,7 +194,7 @@ void maslovma::MatrVect(double **M, double *V, double *R)
     }
 }
 
-double maslovma::ScalarVect(double* v1, double* v2)
+double ScalarVect(double* v1, double* v2)
 {
 	double result=0;
 	for (int i=0; i<N; i++)
