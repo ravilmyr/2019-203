@@ -145,7 +145,7 @@ void dryginaea::lab3()
  * Метод простых итераций
  */
 
-void Multi(double **matrix1, double *matrix2, double *otvet, double *matrix3, int N) //otvet = matrix1 * matrix2 - matrix3
+void Multi(double **matrix1, double *matrix2, double *otvet, int N) //otvet = matrix1 * matrix2
 {
 	double sum;
 
@@ -158,7 +158,7 @@ void Multi(double **matrix1, double *matrix2, double *otvet, double *matrix3, in
 			sum += matrix1[i][j] * matrix2[j];
 		}
 
-		otvet[i] = sum - matrix3[i];
+		otvet[i] = sum;
 	}
 }
 
@@ -179,11 +179,11 @@ void dryginaea::lab4()
 			gapX[i] = x[i];
 		}
 
-		Multi(A, gapX, x, b, N);
+		Multi(A, gapX, x, N);
 
 		for (int i = 0; i < N; i++)
 		{
-			x[i] = gapX[i] - tau * x[i];
+			x[i] = gapX[i] + tau * (b[i] - x[i]);
 		}
 
 		for (int i = 0; i < N; i++)
@@ -243,7 +243,7 @@ void dryginaea::lab5()
 			gapX[i] = x[i];
 		}
 
-		Multi(gapA, gapX, x, gapB, N);
+		Multi(gapA, gapX, x, N);
 		int k = 0;
 
 		for (int i = 0; i < N; i++)
