@@ -344,11 +344,11 @@ void igaykiniv::lab8()
 void igaykiniv::lab9()
 {
     double *new_x = new double[N], lam = 0, eps = 1.e-10;
-    for (int i = 1; i < N; i++) x[i] = 1;
-    
+    for (int i = 1; i < N; i++) x[i] = 0;
+
+    x[0] = 1;
     do
     {
-        cout << lam << endl;
         double new_lam = 0;
         for (int i = 0; i < N; i++)
         {
@@ -360,12 +360,9 @@ void igaykiniv::lab9()
             new_lam += x[i] * new_x[i];
         }
 
-        if (fabs(new_lam - lam) < eps)
-        {
-            lam = new_lam;
-            break;
-        }
+        if (fabs(new_lam - lam) < eps) break;
 
+        lam = new_lam;
         double n = 0;
         for (int i = 0; i < N; i++) n += new_x[i] * new_x[i];
 
