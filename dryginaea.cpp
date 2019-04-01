@@ -164,43 +164,38 @@ void Multi(double **matrix1, double *matrix2, double *otvet, int N) //otvet = ma
 
 void dryginaea::lab4()
 {
-	const double lambda = 0.01;
-	double prev[N];
+	double tau = 0.01;
+	double *gapX = new double[N];
+
 	for (int i = 0; i < N; i++)
 	{
-		prev[i] = 0;
+		x[i] = b[i];
 	}
 
-	double difference;
-	do
+	while (true)
 	{
 		for (int i = 0; i < N; i++)
 		{
-			double sum = 0;
-			for (int j = 0; j < N; j++)
-			{
-				sum += A[i][j] * prev[j];
-			}
-
-			x[i] = prev[i] - lambda * (sum - b[i]);
+			gapX[i] = x[i];
 		}
 
-		difference = 0;
+		Multi(A, gapX, x, N);
+
 		for (int i = 0; i < N; i++)
 		{
-			if (fabs(x[i] - prev[i]) > difference)
-			{
-				difference = fabs(x[i] - prev[i]);
-			}
+			x[i] = gapX[i] + tau * (b[i] - x[i]);
 		}
 
 		for (int i = 0; i < N; i++)
 		{
-			prev[i] = x[i];
+			if (fabs(x[i] - gapX[i]) < eps)
+			{
+				k++;
+			}
 		}
 
-	} while (difference > eps);
-}
+		if (k == N) break;
+	}
 }
 
 
