@@ -144,9 +144,58 @@ void dryginaea::lab3()
 /**
  * Метод простых итераций
  */
+
+void Multi(double **matrix1, double *matrix2, double *otvet, double *matrix3, int N) //otvet = matrix1 * matrix2 - matrix3
+{
+	double sum;
+
+	for (int i = 0; i < N; i++)
+	{
+		sum = 0;
+
+		for (int j = 0; j < N; j++)
+		{
+			sum += matrix1[i][j] * matrix2[j];
+		}
+
+		otvet[i] = sum + matrix3[i];
+	}
+}
+
 void dryginaea::lab4()
 {
+	double tau = 0.01;
+	double *gapX = new double[N];
 
+	for (int i = 0; i < N; i++)
+	{
+		x[i] = b[i];
+	}
+
+	while (true)
+	{
+		for (int i = 0; i < N; i++)
+		{
+			gapX[i] = x[i];
+		}
+
+		Multi(A, gapX, x, b, N);
+
+		for (int i = 0; i < N; i++)
+		{
+			x[i] = gapX[i] - tau * x[i];
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			if (fabs(x[i] - gapX[i]) < eps)
+			{
+				k++;
+			}
+		}
+
+		if (k == N) break;
+	}
 }
 
 
@@ -156,7 +205,57 @@ void dryginaea::lab4()
  */
 void dryginaea::lab5()
 {
+	double **gapA = new double*[N];
+	for (int i = 0; i < N; i++)
+	{
+		gapA[i] = new double[N];
+	}
 
+	double *gapB = new double[N];
+	double *gapX = new double[N];
+
+	for (int i = 0; i < N; i++)
+	{
+		gapA[i][i] = 0;
+
+		for (int j = 0; j < i; j++)
+		{
+			gapA[i][j] = A[i][j] / (-A[i][i]);
+		}
+
+		for (int j = i + 1; j < N; j++)
+		{
+			gapA[i][j] = A[i][j] / (-A[i][i]);
+		}
+
+		gapB[i] = b[i] / A[i][i];
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		x[i] = gapB[i];
+	}
+
+	while (true)
+	{
+		for (int i = 0; i < N; i++)
+		{
+			gapX[i] = x[i];
+		}
+
+		Multi(gapA, gapX, x, gapB, N);
+		int k = 0;
+
+		for (int i = 0; i < N; i++)
+		{
+			if (fabs(x[i] - gapX[i]) < eps)
+			{
+				k++;
+			}
+		}
+
+		if (k == N) break;
+	}
 }
 
 
