@@ -63,6 +63,33 @@ int max;
 void malovava::lab3()
 {
 
+	double* P = new double[N]; // "альфа"
+    double* Q = new double[N]; // "бетта"
+
+    for (int i = 0; i < N; i++)
+    {
+        P[i] = 0;
+        Q[i] = 0;
+    }
+
+    P[0] = -A[0][1] / A[0][0];
+    Q[0] = b[0] / A[0][0];
+
+    for(int i = 1; i < N; i++)
+    {
+        P[i] = A[i][i + 1] / (-A[i][i - 1] * P[i - 1] - A[i][i]);
+        Q[i] = (-b[i] + A[i][i - 1] * Q[i - 1]) / (-A[i][i - 1] * P[i - 1] - A[i][i]);
+    }
+
+    x[N - 1] = Q[N - 1];
+
+    for(int i = N - 2; i >= 0; i--)
+	{
+        x[i] = P[i] * x[i + 1] + Q[i];
+	}
+
+	delete[] P;
+	delete[] Q;
 }
 
 
