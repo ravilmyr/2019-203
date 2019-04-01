@@ -181,12 +181,72 @@ void maslovma::lab5()
 }
 
 
-
 /**
  * Метод минимальных невязок
  */
+void maslovma::MatrVect(double **M, double *V, double *R)
+{
+    for(int i=0; i<N; i++)
+    {
+        R[i]=0;
+        for(int j=0; j<N; j++)
+              R[i]+= M[i][j]*V[j];
+    }
+}
+
+double maslovma::ScalarVect(double* v1, double* v2)
+{
+	double result=0;
+	for (int i=0; i<N; i++)
+        result+=(v1[i]*v2[i]);
+	return result;
+}
+
+
 void maslovma::lab6()
 {
+   const double eps = 1.e-6;
+
+    int count = 0; ///  количество итераций
+    double *U = new double [N];
+    double *r = new double [N];
+    double *TempX = new double[N];
+    double *p = new double[N];
+    double Tau = 0.0;
+
+    for (int i=0; i<N; i++)
+        TempX[i]=0; /// первое приближение задаём нулевым
+
+    do
+    {
+        MatrVect(A, TempX, U);
+
+        for(int i=0; i<N; i++)
+        {
+            r[i] = U[i]-b[i]; /// Вектор невязок
+        }
+
+        MatrVect(A, r, U);
+
+        double TempTau1 = ScalarVect(U, r);
+        double TempTau2 = ScalarVect(U, U);
+        if (TempTau2 == 0) break;
+
+        Tau = TempTau1/TempTau2; /// Итерационный параметр
+
+        for(int i=0; i<N; i++)
+            x[i] = TempX[i] - Tau*r[i];
+
+        for(int i=0; i<N; i++)
+            p[i] = x[i]-TempX[i];
+
+        count++;
+    } while ((sqrt(ScalarVect(p, p)) >= eps) && (count < 500000));
+
+    delete[] U;
+    delete[] r;
+    delete[] p;
+    delete[] TempX;
 
 }
 
