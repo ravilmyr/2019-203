@@ -379,9 +379,82 @@ void sovetnikovakv::lab7()
 }
 
 
+
+/*
+* Метод вращения для нахождения собственных значений матрицы
+*/
 void sovetnikovakv::lab8()
 {
+	// Матрица для промежуточных вычислений
+	double **T = new double*[N];
+	for (int i = 0; i < N; i++) {
+		T[i] = new double[N];
+	}
 
+	while (true) {
+		// Находим наибольший внедиагональный элемент
+		// Вычисляем норму внедиагональных элементов
+		int im = 0;
+		int jm = 0;
+		double norma = 0.;
+		for (int i = 0; i < N - 1; i++) {
+			for (int j = i + 1; j < N; j++) {
+				norma += (A[i][j] * A[i][j]);
+				if (std::abs(A[i][j]) > std::abs(A[im][jm])) {
+					im = i;
+					jm = j;
+				}
+			}
+		}
+
+		// Матрица являеться диагональной
+		if (std::sqrt(norma) < EPSILON) {
+			break;
+		}
+
+		// Находим значения переменных матрицы поворота
+		double f = .5 * std::atan(2. * A[im][jm] / (A[im][im] - A[jm][jm]));
+		double c = std::cos(f);
+		double s = std::sin(f);
+
+		// Копируем матрицу A
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				T[i][j] = A[i][j];
+			}
+		}
+
+		// Осуществляем поворот A * T
+		for (int k = 0; k < N; k++) {
+			T[k][im] = A[k][im] * c + A[k][jm] * s;
+			T[k][jm] = A[k][jm] * c - A[k][im] * s;
+		}
+
+		// Осуществялем поворот T' * (A * T)
+		for (int k = 0; k < N; k++) {
+			A[im][k] = T[im][k] * c + T[jm][k] * s;
+			A[jm][k] = T[jm][k] * c - T[im][k] * s;
+		}
+
+		// Записываем все расчеты от первого поворота в матрицу A
+		for (int i = 0; i < N; i++) {
+			if ((i != im) && (i != jm)) {
+				for (int j = 0; j < N; j++) {
+					A[i][j] = T[i][j];
+				}
+			}
+		}
+	}
+
+	// Вектор собственных значений матрицы
+	for (int i = 0; i < N; i++) {
+		x[i] = A[i][i];
+	}
+
+	for (int i = 0; i < N; i++) {
+		delete[] T[i];
+	}
+	delete[] T;
 }
 
 
