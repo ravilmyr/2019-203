@@ -106,7 +106,35 @@ void maslovma::lab3()
  */
 void maslovma::lab4()
 {
+  double eps = 1e-15;
 
+	double* prevX = new double[N];
+
+	while (true) {
+
+		for (int i = 0; i < N; i++)
+			prevX[i] = x[i];
+
+		for (int i = 0; i < N; i++) {
+			double sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += A[i][j] * x[j];
+			for (int j = i + 1; j < N; j++)
+				sum += A[i][j] * prevX[j];
+			x[i] = (b[i] - sum) / A[i][i];
+		}
+
+		double maxErr = abs(x[0] - prevX[0]);
+		for (int i = 1; i < N; i++)
+			if (abs(x[i] - prevX[i]) > maxErr)
+				maxErr = abs(x[i] - prevX[i]);
+
+		if (maxErr < eps)
+			break;
+
+	}
+
+	delete[] prevX;
 }
 
 
@@ -116,16 +144,137 @@ void maslovma::lab4()
  */
 void maslovma::lab5()
 {
+  const double eps = 10E-20;
+
+    double* D = new double[N];
+    double** LU = new double*[N];
+
+     for(int i=0;i<N;i++)
+      LU[i] = new double[N];
+
+    for(int i=0;i<N;i++)
+     for(int j=0;j<N;j++)
+       {
+         if(i!=j)
+          {
+            LU[i][j] = A[i][j];
+          }
+         else
+          {
+            D[i] = A[i][j];
+            LU[i][j] = 0;
+          }
+       }
+
+  double* new_x = new double[N];
+  double S;
+  double temp;
+  double k=0;
+
+  for(int i=0;i<N;i++)
+        new_x[i] = D[i];
+
+   do{
+      for(int i=0;i<N;i++)
+       {
+         S = 0;
+        for(int j=0;j<N;j++)
+         {
+           if(j!=i)
+            S +=  LU[i][j]*new_x[j];
+         }
+         x[i] = (b[i] - S)/D[i];
+       }
+
+        temp = fabs(new_x[0] - x[0]);
+
+       for(int i=1;i<N;i++)
+        if( fabs(new_x[i] - x[i]) > temp )
+         temp = fabs(new_x[i] - x[i]);
+
+        for(int i=0;i<N;i++)
+            new_x[i] = x[i];
+
+     k++;
+   }while(temp >= eps);
+
+  delete [] new_x;
+
+  for(int i=0;i<N;i++)
+     delete LU[i];
+
+    delete [] LU;
+    delete [] D;
 
 }
-
 
 
 /**
  * Метод минимальных невязок
  */
+void MatrVect(int N, double **M, double *V, double *R)
+{
+    for(int i=0; i<N; i++)
+    {
+        R[i]=0;
+        for(int j=0; j<N; j++)
+              R[i]+= M[i][j]*V[j];
+    }
+}
+
+double ScalarVect(int N, double* v1, double* v2)
+{
+	double result=0;
+	for (int i=0; i<N; i++)
+        result+=(v1[i]*v2[i]);
+	return result;
+}
+
+
 void maslovma::lab6()
 {
+   const double eps = 1.e-6;
+
+    int count = 0; ///  количество итераций
+    double *U = new double [N];
+    double *r = new double [N];
+    double *TempX = new double[N];
+    double *p = new double[N];
+    double Tau = 0.0;
+
+    for (int i=0; i<N; i++)
+        TempX[i]=0; /// первое приближение задаём нулевым
+
+    do
+    {
+        MatrVect(N, A, TempX, U);
+
+        for(int i=0; i<N; i++)
+        {
+            r[i] = U[i]-b[i]; /// Вектор невязок
+        }
+
+        MatrVect(N, A, r, U);
+
+        double TempTau1 = ScalarVect(N, U, r);
+        double TempTau2 = ScalarVect(N, U, U);
+        if (TempTau2 == 0) break;
+
+        Tau = TempTau1/TempTau2; /// Итерационный параметр
+
+        for(int i=0; i<N; i++)
+            x[i] = TempX[i] - Tau*r[i];
+
+        for(int i=0; i<N; i++)
+            p[i] = x[i]-TempX[i];
+
+        count++;
+    } while ((sqrt(ScalarVect(N, p, p)) >= eps) && (count < 500000));
+
+    delete[] U;
+    delete[] r;
+    delete[] p;
+    delete[] TempX;
 
 }
 
