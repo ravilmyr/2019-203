@@ -99,17 +99,70 @@ void tokarevaaa::lab3()
  */
 void tokarevaaa::lab4()
 {
-
+	double eps = 1.e-14;
+	for (int i = 0; i < N; i++) {
+		x[i] = 0;
+	}
+	const double t = 0.01;
+	double *p_x = new double[N];
+	double err = 0;
+	do {
+		for (int i = 0; i < N; i++) {
+			p_x[i] = x[i];
+		}
+		for (int i = 0; i < N; i++) {
+			double sum = 0;
+			for (int j = 0; j < N; j++) {
+				sum += (A[i][j] * p_x[j]);
+			}
+			x[i] += (t * (b[i] - sum));
+		}
+		err = 0;
+		for (int i = 0; i < N; i++) {
+			if (abs(p_x[i] - x[i]) > err) {
+				err = abs(p_x[i] - x[i]);
+			}
+		}
+	} while (err > eps);
+	delete[] p_x;
 }
 
 
 
 /**
- * Метод Якоби или Зейделя
+ * Метод Якоби 
  */
 void tokarevaaa::lab5()
 {
+	double eps = 1.e-14;
+	for (int i = 0; i < N; i++) {
+		x[i] = 0;
+	}
+	double *p_x = new double[N];
+	double err = 0;
+	do {
+		for (int i = 0; i < N; i++) {
+			p_x[i] = x[i];
+		}
+		for (int i = 0; i < N; i++) {
+			double sum = 0;
+			for (int j = 0; j < N; j++) {
+				if (i != j) {
+					sum += (A[i][j] * p_x[j]);
+				}
+			}
 
+			x[i] = (b[i] - sum) / A[i][i];
+		}
+		err = 0;
+		for (int i = 0; i < N; i++) {
+			if ((p_x[i] - x[i]) > err) {
+				err = abs(p_x[i] - x[i]);
+			}
+		}
+	} while (err > eps);
+
+	delete[] p_x;
 }
 
 
