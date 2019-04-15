@@ -263,6 +263,7 @@ void nachinkinaoa::lab9()
                 x[i]=y[i]/sum;
              if(abs(lyamba-pr_lyamba)<eps) break;
             }
+            x[0] = lyamba;
        delete[] y;
 }
 
