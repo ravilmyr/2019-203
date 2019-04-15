@@ -107,9 +107,10 @@ void maslovma::lab3()
 void maslovma::lab4()
 {
   double eps = 1e-15;
+	double tau = 1e-5;
 
 	double* prevX = new double[N];
-
+	
 	while (true) {
 
 		for (int i = 0; i < N; i++)
@@ -117,11 +118,9 @@ void maslovma::lab4()
 
 		for (int i = 0; i < N; i++) {
 			double sum = 0;
-			for (int j = 0; j < i; j++)
-				sum += A[i][j] * x[j];
-			for (int j = i + 1; j < N; j++)
+			for (int j = 0; j < N; j++) 
 				sum += A[i][j] * prevX[j];
-			x[i] = (b[i] - sum) / A[i][i];
+			x[i] = prevX[i] - tau * (sum - b[i]);
 		}
 
 		double maxErr = abs(x[0] - prevX[0]);
