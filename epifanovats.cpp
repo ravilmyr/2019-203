@@ -72,7 +72,7 @@ x = temp;
  */
 void epifanovats::lab3()
 {
-int n1=n-1;
+int n1=N-1;
 double *alfa = new double[N];
 double *beta = new double[N];
 double y = A[0][0];
