@@ -240,10 +240,10 @@ void kobyzevkv::lab7()
 
 	double* prevX = new double[N];
 	double* prevR = new double[N];
-	double* r = b;
-
+	double* r = new double[N];
 	double* z = new double[N];
 	for (int i = 0; i < N; i++) {
+		r[i] = b[i];
 		z[i] = r[i];
 	}
 
@@ -259,7 +259,7 @@ void kobyzevkv::lab7()
 		for (int i = 0; i < N; i++) {
 			double Az = 0;
 			for (int j = 0; j < N; j++) {
-				Az += A[i][j] + z[j];
+				Az += A[i][j] * z[j];
 			}
 			alpha += prevR[i] * prevR[i];
 			denAlpha += Az * z[i];
