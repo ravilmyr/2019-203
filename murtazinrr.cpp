@@ -5,7 +5,7 @@
  */
 void murtazinrr::lab1()
 {
-
+cout <<"Hello world" << endl;
 }
 
 
@@ -82,5 +82,5 @@ void murtazinrr::lab9()
 
 std::string murtazinrr::get_name()
 {
-  return "????????";
+  return "Murtazin R.R.";
 }
